@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kelola Pesanan - Penjual</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f4f4f9; }
+        .container { background: white; padding: 20px; border-radius: 8px; max-width: 900px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #343a40; color: white; }
+        select, button { padding: 6px; border-radius: 4px; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Manajemen Status Pengiriman 🚚</h2>
+        <a href="/dashboard/penjual" style="text-decoration: none; color: #007bff;">&larr; Kembali ke Dashboard Toko</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Nama Pembeli</th>
+                    <th>Total Belanja</th>
+                    <th>Status Pengiriman</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="'#KM-' + ${order.id}">ID</td>
+                    <td th:text="${order.user.username}">Nama</td>
+                    <td th:text="'Rp ' + ${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')}">Total</td>
+                    <td>
+                        <form th:action="@{/order/update-status}" method="post" style="display: flex; gap: 10px;">
+                            <input type="hidden" name="orderId" th:value="${order.id}">
+                            <select name="status">
+                                <option value="DIKEMAS" th:selected="${order.status.name() == 'DIKEMAS'}">📦 Sedang Dikemas</option>
+                                <option value="DIPERJALANAN" th:selected="${order.status.name() == 'DIPERJALANAN'}">🛵 Diperjalanan</option>
+                                <option value="SAMPAI" th:selected="${order.status.name() == 'SAMPAI'}">✅ Sampai Tujuan</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

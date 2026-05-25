@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cek Ongkos Kirim - Kuliner Medan</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f4f4f9; display: flex; justify-content: center; }
+        .card { background: white; padding: 30px; border-radius: 8px; width: 450px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 4px; box-sizing: border-box; }
+        button { background: #fd7e14; color: white; border: none; font-weight: bold; cursor: pointer; }
+        .result-box { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 4px; border-left: 5px solid #28a745; }
+        .price { font-size: 24px; font-weight: bold; color: #28a745; }
+        .btn-back { display: block; text-align: center; margin-top: 15px; text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 style="text-align: center; color: #333;">Cek Ongkos Kirim 🚚</h2>
+    <p style="text-align: center; color: #666; font-size: 14px;">Pengiriman dari Pusat Kota Medan</p>
+
+    <form th:action="@{/ongkir/hitung}" method="post">
+        <label>Pilih Lokasi Tujuan:</label>
+        <select name="jarakKm" id="lokasiDropdown" required onchange="updateNamaLokasi()">
+            <option value="" disabled selected>-- Pilih Kecamatan/Kota --</option>
+            <option th:each="lokasi : ${daftarLokasi}" 
+                    th:value="${lokasi.jarakKm}" 
+                    th:text="${lokasi.nama} + ' (' + ${lokasi.jarakKm} + ' km)'"
+                    th:data-nama="${lokasi.nama}"></option>
+        </select>
+        
+        <input type="hidden" name="namaLokasi" id="namaLokasiHidden">
+        
+        <button type="submit">Hitung Biaya Pengiriman</button>
+    </form>
+
+    <div class="result-box" th:if="${totalOngkir != null}">
+        <p style="margin: 0 0 5px 0;">Tujuan: <strong th:text="${lokasiTerpilih}"></strong></p>
+        <p style="margin: 0 0 10px 0;">Jarak: <span th:text="${jarakTerpilih}"></span> km</p>
+        <p style="margin: 0;">Total Ongkos Kirim:</p>
+        <div class="price" th:text="'Rp ' + ${#numbers.formatDecimal(totalOngkir, 0, 'COMMA', 0, 'POINT')}">Rp 0</div>
+    </div>
+
+    <a href="/dashboard/pembeli" class="btn-back">Kembali ke Dashboard</a>
+</div>
+
+<script>
+    function updateNamaLokasi() {
+        var dropdown = document.getElementById("lokasiDropdown");
+        var selectedOption = dropdown.options[dropdown.selectedIndex];
+        document.getElementById("namaLokasiHidden").value = selectedOption.getAttribute("data-nama");
+    }
+</script>
+
+</body>
+</html>

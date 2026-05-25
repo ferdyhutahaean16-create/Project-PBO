@@ -1,0 +1,45 @@
+package com.kulinermedan.delivery.config;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+@Component
+public class CustomSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
+        
+        String redirectUrl = null;
+
+        // Mengecek role (hak akses) pengguna yang baru saja berhasil login
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            String role = authority.getAuthority();
+            
+            if (role.equals("ADMIN")) {
+                redirectUrl = "/admin/dashboard";
+                break;
+            } else if (role.equals("PENJUAL")) {
+                redirectUrl = "/dashboard/penjual";
+                break;
+            } else if (role.equals("PEMBELI")) {
+                redirectUrl = "/dashboard/pembeli";
+                break;
+            }
+        }
+
+        // Arahkan ke URL yang sesuai
+        if (redirectUrl != null) {
+            response.sendRedirect(redirectUrl);
+        } else {
+            response.sendRedirect("/login?error");
+        }
+    }
+}

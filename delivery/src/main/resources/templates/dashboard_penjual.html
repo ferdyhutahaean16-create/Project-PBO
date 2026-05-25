@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard Penjual - Kuliner Medan</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { color: #333; margin-bottom: 5px; }
+        .sub-title { color: #666; font-size: 14px; margin-bottom: 20px; }
+        .alert-success { background-color: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 20px; border-left: 5px solid #28a745; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #dee2e6; }
+        th { background-color: #343a40; color: white; font-weight: 600; }
+        tr:hover { background-color: #f1f3f5; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-food { background-color: #e3f2fd; color: #0d47a1; }
+        .badge-drink { background-color: #e8f5e9; color: #1b5e20; }
+        .badge-souvenir { background-color: #fff3e0; color: #e65100; }
+        .input-stock { width: 80px; padding: 6px; border: 1px solid #ced4da; border-radius: 4px; text-align: center; font-weight: bold; }
+        .btn-update { background-color: #007bff; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.2s; }
+        .btn-update:hover { background-color: #0056b3; }
+        .btn-logout { float: right; background-color: #dc3545; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/login?logout" class="btn-logout">Keluar Aplikasi</a>
+    <h2>Toko Saya: Manajemen Stok Harian 🏬</h2>
+    <p class="sub-title">Perbarui sisa persediaan produk makanan, minuman, dan souvenir Anda hari ini secara berkala.</p>
+
+    <div class="alert-success" th:if="${param.success != null && param.success[0] == 'stock_updated'}">
+        <strong>Berhasil!</strong> Sisa stok produk Anda telah diperbarui untuk hari ini.
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Produk</th>
+                <th>Kategori</th>
+                <th>Harga Satuan</th>
+                <th style="width: 200px; text-align: center;">Sisa Stok Hari Ini</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prod : ${products}">
+                <td th:text="${prod.name}" style="font-weight: 500;">Bolu Meranti</td>
+                <td>
+                    <span th:if="${prod.category == 'Makanan'}" class="badge badge-food">Makanan</span>
+                    <span th:if="${prod.category == 'Minuman'}" class="badge badge-drink">Minuman</span>
+                    <span th:if="${prod.category == 'Souvenir'}" class="badge badge-souvenir">Souvenir</span>
+                </td>
+                <td th:text="'Rp ' + ${#numbers.formatDecimal(prod.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</td>
+                <td style="text-align: center;">
+                    <form th:action="@{/dashboard/penjual/update-stok}" method="post" style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                        <input type="hidden" name="productId" th:value="${prod.id}">
+                        <input type="number" name="stock" th:value="${prod.stock}" min="0" class="input-stock" required>
+                        <button type="submit" class="btn-update">Simpan</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="4" style="text-align: center; color: #999;">Belum ada produk yang terdaftar di sistem.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

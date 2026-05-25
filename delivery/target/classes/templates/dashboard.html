@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Pembeli - Kuliner Medan</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
+        .container { max-width: 600px; width: 100%; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-top: 0; }
+        .role-badge { display: inline-block; padding: 5px 10px; background: #007bff; color: white; border-radius: 4px; font-size: 14px; margin-bottom: 20px; }
+        
+        /* Desain Grid untuk Menu */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .menu-card { 
+            background: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; text-align: center; 
+            border-radius: 8px; text-decoration: none; color: #333; font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .menu-card:hover { background: #e9ecef; transform: translateY(-3px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        
+        /* Warna Khusus Tiap Menu */
+        .menu-katalog { border-bottom: 4px solid #28a745; }
+        .menu-keranjang { border-bottom: 4px solid #17a2b8; }
+        .menu-ongkir { border-bottom: 4px solid #fd7e14; }
+        .menu-tracking { border-bottom: 4px solid #6f42c1; }
+
+        .btn-logout { display: block; text-align: center; margin-top: 30px; color: #dc3545; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Selamat Datang di Dashboard!</h1>
+    <p style="margin:0;">Role Anda saat ini: <span class="role-badge">PEMBELI</span></p>
+
+    <h3>Pilih Layanan:</h3>
+    
+    <div class="menu-grid">
+        <a href="/produk" class="menu-card menu-katalog">🛍️ Katalog Oleh-oleh</a>
+        <a href="/keranjang" class="menu-card menu-keranjang">🛒 Keranjang Belanja</a>
+        <a href="/ongkir" class="menu-card menu-ongkir">🚚 Cek Ongkos Kirim</a>
+        <a href="/order/tracking" class="menu-card menu-tracking">📦 Tracking Pesanan</a>
+    </div>
+
+    <a href="/login?logout" class="btn-logout">Keluar Aplikasi (Logout)</a>
+</div>
+
+</body>
+</html>

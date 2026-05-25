@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Katalog Oleh-oleh - Kuliner Medan</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f4f4f9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .btn { padding: 8px 12px; text-decoration: none; color: white; border-radius: 4px; display: inline-block; }
+        .btn-add { background: #28a745; margin-bottom: 10px; }
+        .btn-edit { background: #ffc107; color: black; }
+        .btn-delete { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <h2>Katalog Pusat Oleh-oleh Medan</h2>
+    <a href="/produk/tambah" class="btn btn-add">+ Tambah Produk</a>
+    <a href="/admin/dashboard" class="btn" style="background: #6c757d;">Kembali ke Dashboard</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Produk</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prod : ${products}">
+                <td th:text="${prod.name}">Bolu Meranti</td>
+                <td th:text="${prod.category}">Makanan</td>
+                <td th:text="'Rp ' + ${prod.price}">Rp 0</td>
+                <td th:text="${prod.stock}">0</td>
+                <td>
+                    <a th:href="@{/produk/edit/{id}(id=${prod.id})}" class="btn btn-edit">Edit</a>
+                    <a th:href="@{/produk/hapus/{id}(id=${prod.id})}" class="btn btn-delete" onclick="return confirm('Hapus produk ini?')">Hapus</a>
+                    <a th:href="@{/keranjang/tambah/{id}(id=${prod.id})}" class="btn" style="background: #17a2b8;">+ Keranjang</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

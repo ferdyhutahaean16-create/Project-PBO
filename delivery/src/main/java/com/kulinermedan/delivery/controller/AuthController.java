@@ -3,12 +3,13 @@ package com.kulinermedan.delivery.controller;
 import com.kulinermedan.delivery.model.User;
 import com.kulinermedan.delivery.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@RestController
-@RequestMapping("/api/auth")
+@Controller
 public class AuthController {
 
     @Autowired
@@ -17,19 +18,28 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Endpoint untuk Register
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity.badRequest().body("Error: Email sudah digunakan!");
-        }
+    // Menampilkan halaman Register
+    @GetMapping("/register")
+    public String showRegisterPage() {
+        return "register"; // Memanggil file register.html
+    }
 
-        // Enkripsi password sebelum disimpan
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    // Memproses data Register
+    @PostMapping("/register")
+    public String processRegister(@ModelAttribute User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return "redirect:/register?error=email_exists";
+        }
         
-        // Simpan ke database
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         
-        return ResponseEntity.ok("Registrasi berhasil!");
+        return "redirect:/login?registered=true"; // Bawa pengguna ke halaman login setelah sukses
+    }
+
+    // Menampilkan halaman Login
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login"; // Memanggil file login.html
     }
 }

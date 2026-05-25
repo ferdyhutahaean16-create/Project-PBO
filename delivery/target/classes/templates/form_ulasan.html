@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tulis Ulasan - Kuliner Medan</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 450px; }
+        h2 { margin-top: 0; color: #333; text-align: center; }
+        .order-info { background: #e9ecef; padding: 10px 15px; border-radius: 4px; font-size: 14px; margin-bottom: 20px; color: #495057; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #495057; }
+        select, textarea { width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        textarea { resize: vertical; min-height: 100px; }
+        .btn-submit { background: #fd7e14; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background 0.2s; }
+        .btn-submit:hover { background: #e06d0f; }
+        .btn-cancel { display: block; text-align: center; margin-top: 15px; text-decoration: none; color: #6c757d; font-size: 14px; }
+        .btn-cancel:hover { color: #343a40; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Berikan Ulasan Anda ⭐</h2>
+    
+    <div class="order-info">
+        Ulasan untuk Pesanan: <strong>#KM-<span th:text="${order.id}"></span></strong><br>
+        Total Belanja: <strong>Rp <span th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')}"></span></strong>
+    </div>
+
+    <form th:action="@{/ulasan/simpan}" th:object="${review}" method="post">
+        <input type="hidden" name="orderId" th:value="${order.id}">
+
+        <div class="form-group">
+            <label for="ratingRasa">Bagaimana Rasa Makanan/Minuman?</label>
+            <select id="ratingRasa" th:field="*{ratingRasa}" required>
+                <option value="" disabled selected>-- Pilih Rating Rasa --</option>
+                <option value="5">⭐⭐⭐⭐⭐ Sangat Enak / Autentik</option>
+                <option value="4">⭐⭐⭐⭐ Enak</option>
+                <option value="3">⭐⭐⭐ Biasa Saja</option>
+                <option value="2">⭐⭐ Kurang Pas</option>
+                <option value="1">⭐ Tidak Enak</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="ratingKecepatan">Bagaimana Kecepatan Pengiriman Kurir?</label>
+            <select id="ratingKecepatan" th:field="*{ratingKecepatan}" required>
+                <option value="" disabled selected>-- Pilih Rating Kecepatan --</option>
+                <option value="5">⭐⭐⭐⭐⭐ Sangat Cepat & Ramah</option>
+                <option value="4">⭐⭐⭐⭐ Cepat</option>
+                <option value="3">⭐⭐⭐ Standar</option>
+                <option value="2">⭐⭐ Lambat</option>
+                <option value="1">⭐ Sangat Lambat</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="komentar">Tulis Ulasan atau Kritik/Saran:</label>
+            <textarea id="komentar" th:field="*{komentar}" placeholder="Ceritakan pengalaman rasa atau pengiriman oleh-oleh Anda..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Kirim Ulasan</button>
+        <a href="/order/tracking" class="btn-cancel">Batal</a>
+    </form>
+</div>
+
+</body>
+</html>
