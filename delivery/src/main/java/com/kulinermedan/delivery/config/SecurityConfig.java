@@ -28,7 +28,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/css/**", "/error", "/produk/**", "/ongkir/**").permitAll()                        
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN") 
                         .requestMatchers("/dashboard/penjual/**").hasAuthority("PENJUAL")
                         .requestMatchers("/dashboard/pembeli/**").hasAuthority("PEMBELI")
                         .anyRequest().authenticated())

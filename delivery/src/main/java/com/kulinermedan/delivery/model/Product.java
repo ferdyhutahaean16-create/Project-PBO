@@ -1,6 +1,7 @@
 package com.kulinermedan.delivery.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
@@ -25,4 +26,7 @@ public class Product {
 
     @Column(nullable = false, length = 50)
     private String category; // Makanan, Minuman, Souvenir
+
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String imageBase64;
 }

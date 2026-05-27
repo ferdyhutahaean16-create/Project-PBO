@@ -1,46 +1,234 @@
 <!DOCTYPE html>
 <html lang="id" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    <meta charset="UTF-8">
     <title>Katalog Oleh-oleh - Kuliner Medan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial; margin: 20px; background: #f4f4f9; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        .btn { padding: 8px 12px; text-decoration: none; color: white; border-radius: 4px; display: inline-block; }
-        .btn-add { background: #28a745; margin-bottom: 10px; }
-        .btn-edit { background: #ffc107; color: black; }
-        .btn-delete { background: #dc3545; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            text-decoration: none;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-add {
+            background: #28a745;
+        }
+
+        .btn-add:hover {
+            background: #218838;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            margin-left: 10px;
+        }
+
+        /* Desain Grid Produk */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* Desain Kartu Produk */
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Foto Produk (Sementara pakai Placeholder) */
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #e9ecef;
+        }
+
+        .product-content {
+            padding: 15px;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #fd7e14;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-title {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .product-seller {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .product-seller i {
+            color: #007bff;
+            margin-right: 5px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            margin: 0 0 10px 0;
+        }
+
+        .product-stock {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        /* Tombol Aksi dalam Kartu */
+        .action-group {
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .btn-action {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-cart {
+            background: #17a2b8;
+            flex: 2;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: black;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+            color: #6c757d;
+        }
     </style>
 </head>
-<body>
-    <h2>Katalog Pusat Oleh-oleh Medan</h2>
-    <a href="/produk/tambah" class="btn btn-add">+ Tambah Produk</a>
-    <a href="/admin/dashboard" class="btn" style="background: #6c757d;">Kembali ke Dashboard</a>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nama Produk</th>
-                <th>Kategori</th>
-                <th>Harga</th>
-                <th>Stok</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="prod : ${products}">
-                <td th:text="${prod.name}">Bolu Meranti</td>
-                <td th:text="${prod.category}">Makanan</td>
-                <td th:text="'Rp ' + ${prod.price}">Rp 0</td>
-                <td th:text="${prod.stock}">0</td>
-                <td>
-                    <a th:href="@{/produk/edit/{id}(id=${prod.id})}" class="btn btn-edit">Edit</a>
-                    <a th:href="@{/produk/hapus/{id}(id=${prod.id})}" class="btn btn-delete" onclick="return confirm('Hapus produk ini?')">Hapus</a>
-                    <a th:href="@{/keranjang/tambah/{id}(id=${prod.id})}" class="btn" style="background: #17a2b8;">+ Keranjang</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<body>
+
+    <div class="header-section">
+        <h2>🍽️ Menu POTTE HOUSE Cafe & All Day Dining</h2>
+        <div>
+            <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}" href="/produk/tambah" class="btn btn-add">
+                <i class="fas fa-plus"></i> Tambah Menu
+            </a>
+            <a href="/dashboard" class="btn btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
+        </div>
+    </div>
+
+    <div class="product-grid">
+        <div class="product-card" th:each="prod : ${products}">
+
+            <span class="category-badge" th:text="${prod.category}">Kategori</span>
+
+            <img th:if="${prod.imageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${prod.imageBase64}" alt="Foto Menu" class="product-image">
+            
+            <img th:if="${prod.imageBase64 == null}" th:src="'https://ui-avatars.com/api/?name=' + ${prod.name} + '&background=random&color=fff&size=300'" alt="Foto Menu" class="product-image">
+
+            <div class="product-content">
+                <h3 class="product-title" th:text="${prod.name}">Nama Produk</h3>
+
+                <div class="product-seller">
+                    <i class="fas fa-store"></i> Toko Oleh-Oleh Khas Medan
+                </div>
+
+                <p class="product-price"
+                    th:text="'Rp ' + ${#numbers.formatDecimal(prod.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
+                <p class="product-stock">Tersedia: <strong th:text="${prod.stock}">0</strong> stok</p>
+
+                <div class="action-group">
+                    <a th:if="${currentRole == 'PEMBELI'}" th:href="@{/keranjang/tambah/{id}(id=${prod.id})}"
+                        class="btn-action btn-cart">
+                        <i class="fas fa-cart-plus"></i> Beli
+                    </a>
+
+                    <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}"
+                        th:href="@{/produk/edit/{id}(id=${prod.id})}" class="btn-action btn-edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}"
+                        th:href="@{/produk/hapus/{id}(id=${prod.id})}" class="btn-action btn-delete"
+                        onclick="return confirm('Hapus produk ini?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(products)}" class="empty-state">
+                <i class="fas fa-box-open" style="font-size: 48px; color: #dee2e6; margin-bottom: 15px;"></i>
+                <h3>Katalog Masih Kosong</h3>
+                <p>Belum ada produk oleh-oleh yang ditambahkan ke dalam sistem.</p>
+            </div>
+        </div>
+
 </body>
+
 </html>

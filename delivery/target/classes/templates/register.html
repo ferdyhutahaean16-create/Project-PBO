@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="id" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register - Kuliner Medan</title>
+    <title>Register - POTTE HOUSE</title>
     <style>
         body { font-family: Arial; background: #f4f4f9; display: flex; justify-content: center; padding-top: 50px; }
         .card { background: white; padding: 20px 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; }
-        input, select, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
-        button { background: #28a745; color: white; border: none; cursor: pointer; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { background: #d35400; color: white; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.2s;}
+        button:hover { background: #b03a00; }
+        .brand { text-align: center; color: #2c3e50; font-size: 20px; font-weight: 900; margin-bottom: 5px;}
+        .brand span { color: #d35400; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>Daftar Akun Baru</h2>
-        <div th:if="${param.error}" style="color: red;">Email sudah digunakan!</div>
+        <div class="brand">POTTE <span>HOUSE</span></div>
+        <h2 style="text-align: center; margin-top: 5px;">Daftar Akun Baru</h2>
+        
+        <div th:if="${param.error}" style="color: red; text-align: center; font-size: 14px;">Email sudah digunakan!</div>
         
         <form th:action="@{/register}" method="post">
             <input type="text" name="username" placeholder="Nama Lengkap" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <select name="role" required>
-                <option value="PEMBELI">Pembeli</option>
-                <option value="PENJUAL">Toko / Penjual</option>
-            </select>
+            
+            <input type="hidden" name="role" value="PEMBELI">
+            
             <button type="submit">Daftar Sekarang</button>
         </form>
-        <p style="text-align: center; font-size: 14px;">Sudah punya akun? <a href="/login">Login di sini</a></p>
+        <p style="text-align: center; font-size: 14px;">Sudah punya akun? <a href="/login" style="color: #0095da;">Login di sini</a></p>
     </div>
 </body>
 </html>

@@ -1,50 +1,122 @@
 <!DOCTYPE html>
 <html lang="id" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Keranjang Belanja - Kuliner Medan</title>
+    <meta charset="UTF-8">
+    <title>Keranjang Pesanan - POTTE HOUSE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial; margin: 20px; background: #f4f4f9; }
-        .container { background: white; padding: 20px; border-radius: 8px; max-width: 800px; margin: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #28a745; color: white; }
-        .btn-delete { background: #dc3545; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px; }
-        .btn-back { background: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; margin-bottom: 10px;}
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
+        .navbar { background-color: #ffffff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 15px rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; }
+        .navbar-brand { font-size: 22px; font-weight: 900; color: #2c3e50; text-decoration: none; letter-spacing: 1px; }
+        .navbar-brand span { color: #d35400; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-link { text-decoration: none; color: #555; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .nav-link:hover, .nav-link.active { color: #d35400; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .role-badge { background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .btn-logout { color: #e74c3c; text-decoration: none; font-size: 18px; transition: 0.2s; }
+        
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .page-header { background: #2c3e50; color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .page-header h2 { margin: 0; font-size: 24px; }
+        .page-header p { margin: 5px 0 0 0; opacity: 0.8; font-size: 14px; }
+        
+        .card-table { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 20px;}
+        table { width: 100%; border-collapse: collapse; }
+        th { border-bottom: 2px solid #f1f3f5; color: #495057; text-align: left; padding: 15px; font-size: 13px; text-transform: uppercase; }
+        td { padding: 15px; border-bottom: 1px solid #f1f3f5; font-size: 15px; vertical-align: middle; }
+        
+        .menu-item { display: flex; align-items: center; gap: 15px; }
+        .menu-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #eee; }
+        .btn-delete { color: #dc3545; background: #fff5f5; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 14px; transition: 0.2s; }
+        .btn-delete:hover { background: #dc3545; color: white; }
+        
+        /* CHECKOUT SECTION BARU */
+        .checkout-wrapper { margin-top: 25px; padding-top: 20px; border-top: 2px dashed #eee; display: flex; justify-content: space-between; align-items: flex-end;}
+        .shipping-form { background: #fdfbfb; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; width: 350px; }
+        .shipping-form label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 13px; color: #555;}
+        .shipping-form select, .shipping-form textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 14px; margin-bottom: 10px;}
+        
+        .btn-checkout { background: #d35400; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(211,84,0,0.2); height: fit-content;}
+        .btn-checkout:hover { background: #b03a00; transform: translateY(-2px); }
+        .empty-state { text-align: center; padding: 40px; color: #adb5bd; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Keranjang Belanja Saya 🛒</h2>
-        <a href="/produk" class="btn-back">Kembali ke Katalog</a>
+    <nav class="navbar">
+        <a href="/dashboard/pembeli" class="navbar-brand">POTTE <span>HOUSE</span></a>
+        <div class="nav-links">
+            <a href="/dashboard/pembeli" class="nav-link"><i class="fas fa-utensils"></i> Menu</a>
+            <a href="/keranjang" class="nav-link active"><i class="fas fa-shopping-basket"></i> Keranjang</a>
+            <a href="/order/tracking" class="nav-link"><i class="fas fa-receipt"></i> Status Pesanan</a>
+        </div>
+        <div class="nav-right">
+            <span class="role-badge" th:text="${roleName}">PEMBELI</span>
+            <a href="/login?logout" class="btn-logout" title="Keluar"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </nav>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Produk</th>
-                    <th>Harga Satuan</th>
-                    <th>Jumlah</th>
-                    <th>Subtotal</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${cartItems}">
-                    <td th:text="${item.product.name}">Nama</td>
-                    <td th:text="'Rp ' + ${item.product.price}">Harga</td>
-                    <td th:text="${item.quantity}">0</td>
-                    <td th:text="'Rp ' + (${item.product.price} * ${item.quantity})">Subtotal</td>
-                    <td>
-                        <a th:href="@{/keranjang/hapus/{id}(id=${item.id})}" class="btn-delete">Hapus</a>
-                    </td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(cartItems)}">
-                    <td colspan="5" style="text-align: center;">Keranjang Anda masih kosong.</td>
-                </tr>
-            </tbody>
-        </table>
-        <form th:action="@{/order/checkout}" method="post" style="margin-top: 20px; text-align: right;">
-            <button type="submit" class="btn-back" style="background: #ff9800; font-weight: bold;">Proses Checkout Pesanan ➔</button>
-        </form>
+    <div class="container">
+        <div class="page-header">
+            <div>
+                <h2>Keranjang Pesanan</h2>
+                <p>Pilih alamat pengiriman terdekat dari Dr. Mansyur sebelum checkout.</p>
+            </div>
+            <i class="fas fa-shopping-basket" style="font-size: 40px; opacity: 0.3;"></i>
+        </div>
+
+        <div class="card-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Menu</th>
+                        <th>Harga</th>
+                        <th>Jml</th>
+                        <th>Subtotal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cartItems}">
+                        <td>
+                            <div class="menu-item">
+                                <img th:if="${item.product.imageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${item.product.imageBase64}" class="menu-img">
+                                <img th:if="${item.product.imageBase64 == null}" th:src="'https://ui-avatars.com/api/?name=' + ${item.product.name} + '&background=random&color=fff'" class="menu-img">
+                                <strong style="color: #2c3e50;" th:text="${item.product.name}">Nama Menu</strong>
+                            </div>
+                        </td>
+                        <td th:text="'Rp ' + ${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}">Harga</td>
+                        <td><strong th:text="${item.quantity}">0</strong></td>
+                        <td style="font-weight: bold; color: #d35400;" th:text="'Rp ' + ${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')}">Subtotal</td>
+                        <td>
+                            <a th:href="@{/keranjang/hapus/{id}(id=${item.id})}" class="btn-delete"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(cartItems)}">
+                        <td colspan="5" class="empty-state">Keranjang Anda masih kosong. Yuk pesan sesuatu!</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="checkout-wrapper" th:if="${not #lists.isEmpty(cartItems)}">
+                <form th:action="@{/order/checkout}" method="post" style="display: flex; gap: 30px; width: 100%; justify-content: space-between; align-items: flex-end;">
+                    
+                    <div class="shipping-form">
+                        <label><i class="fas fa-map-marker-alt" style="color:#d35400;"></i> Pengiriman (Dari Jl. Dr. Mansyur)</label>
+                        <select name="ongkir" required>
+                            <option value="" disabled selected>-- Pilih Lokasi Terdekat --</option>
+                            <option value="5000">Kec. Medan Selayang (Rp 5.000)</option>
+                            <option value="7000">Kec. Medan Baru / USU (Rp 7.000)</option>
+                            <option value="9000">Kec. Medan Sunggal (Rp 9.000)</option>
+                            <option value="12000">Kec. Medan Johor (Rp 12.000)</option>
+                        </select>
+                        <textarea name="alamatDetail" rows="2" placeholder="Detail Alamat (Contoh: Jl. Setia Budi No.12, Pagar Hitam)" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-checkout">Proses Checkout <i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>
