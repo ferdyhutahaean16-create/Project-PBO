@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beri Ulasan - POTTE HOUSE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f6f9; 
+            margin: 0; 
+            color: #333; 
+        }
+        
+        /* NAVBAR SIMPLE */
+        .navbar { 
+            background-color: #ffffff; 
+            padding: 15px 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04); 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .navbar-brand { font-size: 22px; font-weight: 900; color: #2c3e50; text-decoration: none; letter-spacing: 1px; }
+        .navbar-brand span { color: #d35400; }
+        .navbar-title { font-weight: bold; color: #6c757d; font-size: 15px; }
+
+        /* CONTAINER & KARTU ULASAN */
+        .container { max-width: 650px; margin: 40px auto; padding: 0 20px; }
+        
+        .review-card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            border-top: 5px solid #d35400;
+        }
+        
+        .header-text { text-align: center; margin-bottom: 30px; }
+        .header-text i { font-size: 40px; color: #f1c40f; margin-bottom: 15px; }
+        .header-text h2 { color: #2c3e50; margin: 0 0 10px 0; font-size: 24px; font-weight: 800;}
+        .header-text p { color: #6c757d; margin: 0; font-size: 15px; }
+        
+        /* INFO PESANAN */
+        .order-info { 
+            background: #fff8f5; 
+            border: 1px dashed #ffccbc; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 25px; 
+            text-align: center; 
+        }
+        .order-info span { color: #888; font-size: 13px; display: block; margin-bottom: 5px;}
+        .order-info strong { color: #d35400; font-size: 18px; font-weight: 900; letter-spacing: 1px;}
+        
+        /* FORM INPUT */
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #495057; font-size: 14px;}
+        
+        select, textarea { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid #ced4da; 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 14px; 
+            outline: none; 
+            transition: 0.2s; 
+            box-sizing: border-box;
+            background-color: #fdfdfd;
+        }
+        select:focus, textarea:focus { 
+            border-color: #d35400; 
+            box-shadow: 0 0 0 3px rgba(211,84,0,0.1); 
+            background-color: #fff;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        /* TOMBOL */
+        .btn-submit { 
+            background: #d35400; 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            width: 100%; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 16px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            margin-top: 10px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-submit:hover { 
+            background: #b03a00; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 15px rgba(211,84,0,0.2); 
+        }
+        
+        .btn-cancel { 
+            display: block; 
+            text-align: center; 
+            margin-top: 20px; 
+            color: #adb5bd; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 600; 
+            transition: 0.2s;
+        }
+        .btn-cancel:hover { color: #495057; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard/pembeli" class="navbar-brand">POTTE <span>HOUSE</span></a>
+        <div class="navbar-title">
+            <i class="fas fa-edit"></i> Penilaian Pelanggan
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="review-card">
+            
+            <div class="header-text">
+                <i class="fas fa-star"></i>
+                <h2>Bagaimana Pengalaman Anda?</h2>
+                <p>Bantu kami meningkatkan kualitas hidangan dan pelayanan POTTE HOUSE.</p>
+            </div>
+            
+            <div class="order-info" th:if="${order != null}">
+                <span>Menulis ulasan untuk pesanan:</span>
+                <strong>#PH-<span th:text="${order.id}">1</span></strong>
+            </div>
+            <div class="order-info" th:if="${order == null}">
+                <span>Menulis ulasan untuk pesanan:</span>
+                <strong>#PH-<span th:text="${id}">1</span></strong>
+            </div>
+
+            <form th:action="@{/ulasan/simpan}" method="post">
+                <input type="hidden" name="orderId" th:value="${order != null ? order.id : id}">
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Penilaian Rasa</label>
+                        <select name="ratingRasa" required>
+                            <option value="" disabled selected>-- Pilih Tingkat Rasa --</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (Sangat Enak)</option>
+                            <option value="4">⭐⭐⭐⭐ (Enak)</option>
+                            <option value="3">⭐⭐⭐ (Cukup Baik)</option>
+                            <option value="2">⭐⭐ (Kurang Enak)</option>
+                            <option value="1">⭐ (Sangat Kecewa)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kecepatan Pengiriman</label>
+                        <select name="ratingKecepatan" required>
+                            <option value="" disabled selected>-- Pilih Kecepatan --</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (Sangat Cepat)</option>
+                            <option value="4">⭐⭐⭐⭐ (Tepat Waktu)</option>
+                            <option value="3">⭐⭐⭐ (Standar)</option>
+                            <option value="2">⭐⭐ (Agak Lambat)</option>
+                            <option value="1">⭐ (Sangat Lambat)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tulis Ulasan Anda</label>
+                    <textarea name="komentar" rows="5" placeholder="Ceritakan pengalaman Anda mengenai rasa makanan, kecepatan pengiriman, atau kualitas pengemasan kami..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Kirim Ulasan <i class="fas fa-paper-plane"></i>
+                </button>
+                <a href="/order/tracking" class="btn-cancel">Batal & Kembali ke Status Pesanan</a>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
