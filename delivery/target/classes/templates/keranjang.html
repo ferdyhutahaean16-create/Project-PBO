@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Keranjang Pesanan - POTTE HOUSE</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -90,11 +91,371 @@
         /* Responsif untuk layar kecil */
         @media (max-width: 900px) {
             .cart-container { grid-template-columns: 1fr; }
+=======
+    <title>Keranjang - POTTE HOUSE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand:       #B85C38;
+            --brand-dark:  #8C3E1E;
+            --brand-light: #FFF0E8;
+            --ink:         #1E1209;
+            --ink-soft:    #5C4033;
+            --surface:     #FAFAF8;
+            --card:        #FFFFFF;
+            --border:      rgba(184,92,56,0.12);
+            --shadow-sm:   0 2px 12px rgba(184,92,56,0.07);
+            --shadow-md:   0 8px 32px rgba(184,92,56,0.13);
+            --radius-sm:   8px;
+            --radius-md:   14px;
+            --radius-lg:   20px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+        .navbar-brand span { color: var(--brand); }
+        .nav-links { display: flex; gap: 6px; align-items: center; }
+        .nav-link {
+            display: flex; align-items: center; gap: 7px;
+            text-decoration: none; color: var(--ink-soft);
+            font-size: 13.5px; font-weight: 400;
+            padding: 7px 14px; border-radius: 30px;
+            transition: background 0.18s, color 0.18s;
+        }
+        .nav-link i { font-size: 14px; }
+        .nav-link:hover { background: var(--brand-light); color: var(--brand); }
+        .nav-link.active { background: var(--brand-light); color: var(--brand); font-weight: 500; }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .role-badge {
+            background: var(--brand); color: #fff;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 11.5px; font-weight: 500; letter-spacing: 0.5px;
+        }
+        .btn-logout {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #FFF0E8; color: var(--brand);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; text-decoration: none; transition: background 0.18s;
+        }
+        .btn-logout:hover { background: var(--brand); color: #fff; }
+
+        /* PAGE HEADER */
+        .page-header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 28px 40px;
+        }
+        .page-header-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .page-header-icon {
+            width: 48px; height: 48px;
+            background: var(--brand-light);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--brand);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .page-header p {
+            font-size: 13px;
+            color: var(--ink-soft);
+            margin-top: 2px;
+        }
+
+        /* LAYOUT */
+        .page-body {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 36px 24px 80px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* BACK LINK */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--ink-soft);
+            font-size: 13px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: #fff;
+            transition: background 0.18s, color 0.18s;
+        }
+        .btn-back:hover { background: var(--brand-light); color: var(--brand); border-color: var(--brand); }
+
+        /* CART CARD */
+        .cart-card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .cart-card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .cart-card-header h2 { font-size: 15px; font-weight: 500; color: var(--ink); }
+        .item-count {
+            background: var(--brand-light);
+            color: var(--brand);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* TABLE */
+        .cart-table { width: 100%; border-collapse: collapse; }
+        .cart-table thead tr {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        .cart-table th {
+            padding: 12px 18px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--ink-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-align: left;
+        }
+        .cart-table th:last-child { text-align: center; }
+        .cart-table td {
+            padding: 16px 18px;
+            font-size: 14px;
+            color: var(--ink);
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .cart-table tbody tr:last-child td { border-bottom: none; }
+        .cart-table tbody tr:hover { background: #FFFCFB; }
+
+        .prod-cell { display: flex; align-items: center; gap: 12px; }
+        .prod-avatar {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .prod-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .prod-name { font-weight: 500; font-size: 14px; color: var(--ink); }
+
+        .price-text { font-weight: 400; color: var(--ink-soft); }
+        .qty-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--brand-light);
+            color: var(--brand);
+            font-weight: 500;
+            font-size: 13px;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+        }
+        .subtotal-text { font-weight: 500; color: var(--brand); }
+
+        .btn-hapus {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: #FEF2F2;
+            color: #DC2626;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.18s;
+            margin: auto;
+        }
+        .btn-hapus:hover { background: #DC2626; color: #fff; }
+
+        /* EMPTY STATE */
+        .empty-row td {
+            padding: 56px 20px;
+            text-align: center;
+            color: var(--ink-soft);
+        }
+        .empty-row .empty-icon {
+            font-size: 40px;
+            color: #D4956A;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .empty-row p { font-size: 15px; margin-bottom: 16px; }
+        .empty-row a {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: var(--brand); color: #fff;
+            font-size: 13px; font-weight: 500;
+            padding: 9px 20px; border-radius: 20px;
+            text-decoration: none; transition: background 0.18s;
+        }
+        .empty-row a:hover { background: var(--brand-dark); }
+
+        /* SUMMARY CARD */
+        .summary-card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: sticky;
+            top: 84px;
+        }
+        .summary-header {
+            background: var(--brand);
+            padding: 18px 22px;
+            position: relative;
+            overflow: hidden;
+        }
+        .summary-header::before {
+            content: '';
+            position: absolute;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.15);
+            top: -40px; right: -30px;
+        }
+        .summary-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            position: relative;
+        }
+        .summary-header p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 2px;
+            position: relative;
+        }
+        .summary-body { padding: 20px 22px; }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .summary-row:last-of-type { border-bottom: none; }
+        .summary-row.total {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink);
+            padding-top: 14px;
+            margin-top: 4px;
+            border-top: 1.5px solid var(--border);
+            border-bottom: none;
+        }
+        .summary-row.total .amount { color: var(--brand); }
+        .summary-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            background: var(--brand-light);
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin: 14px 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            line-height: 1.5;
+        }
+        .summary-note i { color: var(--brand); margin-top: 1px; flex-shrink: 0; }
+        .btn-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: var(--brand);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 13px 20px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.18s;
+            margin-top: 4px;
+        }
+        .btn-checkout:hover { background: var(--brand-dark); }
+        .btn-checkout:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* FOOTER */
+        .site-footer {
+            background: var(--ink);
+            color: rgba(255,255,255,0.55);
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
+        }
+        .site-footer span { color: var(--brand); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar { padding: 0 20px; }
+            .nav-links { display: none; }
+            .page-header { padding: 20px; }
+            .page-body { grid-template-columns: 1fr; padding: 20px 16px 60px; }
+>>>>>>> fe328d851fea36116bb23ba407b8097b870d8359
             .summary-card { position: static; }
         }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 
     <!-- NAVBAR -->
     <nav class="navbar">
@@ -134,11 +495,66 @@
                         <th style="text-align: center;">Jumlah</th>
                         <th>Subtotal</th>
                         <th style="text-align: right;">Aksi</th>
+=======
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">POTTE <span>HOUSE</span></a>
+    <div class="nav-links">
+        <a href="/dashboard" class="nav-link"><i class="fas fa-utensils"></i> Menu</a>
+        <a href="/keranjang" class="nav-link active"><i class="fas fa-shopping-basket"></i> Keranjang</a>
+        <a href="/ongkir" class="nav-link"><i class="fas fa-motorcycle"></i> Cek Ongkir</a>
+        <a href="/order/tracking" class="nav-link"><i class="fas fa-receipt"></i> Status Pesanan</a>
+    </div>
+    <div class="nav-right">
+        <span class="role-badge" th:text="${roleName}">PEMBELI</span>
+        <a href="/login?logout" class="btn-logout" title="Keluar"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+    <div class="page-header-inner">
+        <div class="page-header-icon">
+            <i class="fas fa-shopping-basket"></i>
+        </div>
+        <div>
+            <h1>Keranjang Belanja</h1>
+            <p>Periksa pesananmu sebelum checkout</p>
+        </div>
+    </div>
+</div>
+
+<!-- BODY -->
+<div class="page-body">
+
+    <!-- KIRI: TABEL -->
+    <div>
+        <a href="/dashboard" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali ke Menu
+        </a>
+
+        <div class="cart-card">
+            <div class="cart-card-header">
+                <h2>Item Pesanan</h2>
+                <span class="item-count" th:text="${#lists.size(cartItems)} + ' item'">0 item</span>
+            </div>
+
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Harga Satuan</th>
+                        <th>Jumlah</th>
+                        <th>Subtotal</th>
+                        <th style="text-align:center;">Hapus</th>
+>>>>>>> fe328d851fea36116bb23ba407b8097b870d8359
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="item : ${cartItems}">
                         <td>
+<<<<<<< HEAD
                             <div class="product-cell">
                                 <img th:if="${item.product.imageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${item.product.imageBase64}" class="prod-img">
                                 <img th:if="${item.product.imageBase64 == null}" th:src="'https://ui-avatars.com/api/?name=' + ${item.product.name} + '&background=random&color=fff&size=100'" class="prod-img">
@@ -152,12 +568,88 @@
                         <td class="subtotal-text" th:text="'Rp ' + ${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')}">Rp 0</td>
                         <td style="text-align: right;">
                             <a th:href="@{/keranjang/hapus/{id}(id=${item.id})}" class="btn-delete" title="Hapus Item">
+=======
+                            <div class="prod-cell">
+                                <div class="prod-avatar">
+                                    <img th:src="'https://ui-avatars.com/api/?name=' + ${item.product.name} + '&background=B85C38&color=fff&size=88&bold=true'"
+                                         th:alt="${item.product.name}">
+                                </div>
+                                <span class="prod-name" th:text="${item.product.name}">Nama Produk</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="price-text"
+                                  th:text="'Rp ' + ${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}">
+                                Rp 0
+                            </span>
+                        </td>
+                        <td>
+                            <span class="qty-badge" th:text="${item.quantity}">0</span>
+                        </td>
+                        <td>
+                            <span class="subtotal-text"
+                                  th:text="'Rp ' + ${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')}">
+                                Rp 0
+                            </span>
+                        </td>
+                        <td style="text-align:center;">
+                            <a th:href="@{/keranjang/hapus/{id}(id=${item.id})}" class="btn-hapus" title="Hapus">
+>>>>>>> fe328d851fea36116bb23ba407b8097b870d8359
                                 <i class="fas fa-trash-alt"></i>
                             </a>
                         </td>
                     </tr>
+<<<<<<< HEAD
                 </tbody>
             </table>
+=======
+
+                    <tr th:if="${#lists.isEmpty(cartItems)}" class="empty-row">
+                        <td colspan="5">
+                            <i class="fas fa-shopping-basket empty-icon"></i>
+                            <p>Keranjang kamu masih kosong.</p>
+                            <a href="/dashboard"><i class="fas fa-utensils"></i> Lihat Menu</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- KANAN: RINGKASAN -->
+    <div>
+        <div class="summary-card">
+            <div class="summary-header">
+                <h3>Ringkasan Pesanan</h3>
+                <p>Potte House Cafe, Medan</p>
+            </div>
+            <div class="summary-body">
+                <div class="summary-row">
+                    <span>Subtotal item</span>
+                    <span th:text="'Rp ' + ${#numbers.formatDecimal(totalHarga, 0, 'COMMA', 0, 'POINT')}">Rp 0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Biaya pengiriman</span>
+                    <span style="color:#0F6E56; font-weight:500;">Dihitung saat checkout</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span class="amount" th:text="'Rp ' + ${#numbers.formatDecimal(totalHarga, 0, 'COMMA', 0, 'POINT')}">Rp 0</span>
+                </div>
+
+                <div class="summary-note">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Ongkos kirim dihitung berdasarkan lokasimu. Cek estimasi di menu <strong>Cek Ongkir</strong>.</span>
+                </div>
+
+                <form th:action="@{/order/checkout}" method="post">
+                    <button type="submit" class="btn-checkout"
+                            th:disabled="${#lists.isEmpty(cartItems)}">
+                        <i class="fas fa-lock"></i> Proses Checkout
+                    </button>
+                </form>
+            </div>
+>>>>>>> fe328d851fea36116bb23ba407b8097b870d8359
         </div>
 
         <!-- KOLOM KANAN: RINGKASAN & FORM -->
@@ -208,6 +700,7 @@
 
     </div>
 
+<<<<<<< HEAD
     <!-- Script Penghitung Otomatis -->
     <script th:inline="javascript">
         // Mengambil data totalBelanja dari Controller Java
@@ -236,6 +729,14 @@
         // Jalankan sekali saat halaman pertama kali dimuat
         hitungTotal();
     </script>
+=======
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    &copy; 2024 <span>Potte House</span> Cafe &mdash; All Day Dining, Medan
+</footer>
+>>>>>>> fe328d851fea36116bb23ba407b8097b870d8359
 
 </body>
 </html>
