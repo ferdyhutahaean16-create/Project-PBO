@@ -30,7 +30,16 @@ public class CartController {
         User user = userRepository.findByEmail(principal.getName()).orElse(null);
         List<Cart> cartItems = cartRepository.findByUser(user);
         
+        // RUMUS PERHITUNGAN TOTAL (Tambahkan ini)
+        double totalBelanja = 0;
+        for (Cart item : cartItems) {
+            totalBelanja += (item.getProduct().getPrice() * item.getQuantity());
+        }
+
+        // Kirim datanya ke HTML
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalBelanja", totalBelanja); // Kunci agar tulisan 'null' hilang!
+        
         return "keranjang";
     }
 
