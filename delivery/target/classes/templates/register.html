@@ -1,34 +1,230 @@
 <!DOCTYPE html>
 <html lang="id" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - POTTE HOUSE</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: Arial; background: #f4f4f9; display: flex; justify-content: center; padding-top: 50px; }
-        .card { background: white; padding: 20px 40px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300px; }
-        input, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
-        button { background: #d35400; color: white; border: none; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.2s;}
-        button:hover { background: #b03a00; }
-        .brand { text-align: center; color: #2c3e50; font-size: 20px; font-weight: 900; margin-bottom: 5px;}
-        .brand span { color: #d35400; }
+        :root {
+            --primary-color: #c8623c; /* Terakota khas Potte House */
+            --primary-hover: #b05432;
+            --bg-color: #fcfaf8; /* Putih tulang */
+            --card-bg: #ffffff;
+            --text-dark: #2d2d2d;
+            --text-muted: #6b6b6b;
+            --border-color: #e5e7eb;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
+
+        .register-card { 
+            background: var(--card-bg); 
+            padding: 45px 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); 
+            width: 100%;
+            max-width: 420px; 
+            box-sizing: border-box;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin: 0 0 5px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-logo h1 span {
+            color: var(--primary-color);
+            font-style: italic;
+        }
+
+        .brand-logo p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Alerts Styling */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        input, select { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            color: var(--text-dark);
+            background-color: #fdfdfd;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #adb5bd;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(200, 98, 60, 0.15);
+            background-color: white;
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b6b6b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px top 50%;
+            background-size: 12px auto;
+            cursor: pointer;
+        }
+
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 10px;
+            background: var(--primary-color); 
+            color: white; 
+            border: none; 
+            border-radius: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+
+        button:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 98, 60, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .footer-link {
+            text-align: center; 
+            font-size: 14px; 
+            color: var(--text-muted);
+            margin-top: 25px;
+        }
+
+        .footer-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="brand">POTTE <span>HOUSE</span></div>
-        <h2 style="text-align: center; margin-top: 5px;">Daftar Akun Baru</h2>
+
+    <div class="register-card">
         
-        <div th:if="${param.error}" style="color: red; text-align: center; font-size: 14px;">Email sudah digunakan!</div>
+        <div class="brand-logo">
+            <h1>POTTE <span>House</span></h1>
+            <p>Daftar akun untuk mulai memesan</p>
+        </div>
+
+        <div th:if="${param.error}" class="alert alert-error">
+            <i class="fas fa-exclamation-triangle"></i> Email sudah digunakan! Silakan gunakan email lain.
+        </div>
         
         <form th:action="@{/register}" method="post">
-            <input type="text" name="username" placeholder="Nama Lengkap" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
             
-            <input type="hidden" name="role" value="PEMBELI">
+            <div class="form-group">
+                <label for="username">Nama Lengkap</label>
+                <input type="text" id="username" name="username" placeholder="Masukkan nama lengkap Anda" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Alamat Email</label>
+                <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" name="password" placeholder="Buat kata sandi minimal 8 karakter" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="role">Tipe Akun</label>
+                <select id="role" name="role" required>
+                    <option value="PEMBELI">Pelanggan / Pembeli</option>
+                    <option value="PENJUAL">Toko / Penjual</option>
+                </select>
+            </div>
             
             <button type="submit">Daftar Sekarang</button>
         </form>
-        <p style="text-align: center; font-size: 14px;">Sudah punya akun? <a href="/login" style="color: #0095da;">Login di sini</a></p>
+
+        <div class="footer-link">
+            Sudah punya akun? <a href="/login">Masuk di sini</a>
+        </div>
+
     </div>
+
 </body>
 </html>

@@ -5,135 +5,445 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POTTE HOUSE - Cafe & All Day Dining</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
-        /* Desain Warna Warm khas Restoran */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; margin: 0; color: #333; }
-        
-        /* NAVBAR ATAS (Menu Navigasi) */
+        :root {
+            --brand:       #B85C38;
+            --brand-dark:  #8C3E1E;
+            --brand-light: #FFF0E8;
+            --ink:         #1E1209;
+            --ink-soft:    #5C4033;
+            --surface:     #FAFAF8;
+            --card:        #FFFFFF;
+            --border:      rgba(184,92,56,0.12);
+            --shadow-sm:   0 2px 12px rgba(184,92,56,0.07);
+            --shadow-md:   0 8px 32px rgba(184,92,56,0.13);
+            --radius-sm:   8px;
+            --radius-md:   14px;
+            --radius-lg:   20px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
         .navbar {
-            background-color: #ffffff;
-            padding: 15px 40px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
-        .navbar-brand { font-size: 24px; font-weight: 900; color: #2c3e50; text-decoration: none; letter-spacing: 1px; }
-        .navbar-brand span { color: #d35400; /* Warna Oranye Terbakar */ }
-        
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-link { text-decoration: none; color: #555; font-weight: 600; font-size: 15px; transition: color 0.2s; }
-        .nav-link:hover { color: #d35400; }
-        .nav-link i { margin-right: 6px; }
-        
-        .nav-right { display: flex; align-items: center; gap: 15px; }
-        .role-badge { background: #2c3e50; color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .btn-logout { color: #e74c3c; text-decoration: none; font-size: 18px; transition: 0.2s; }
-        .btn-logout:hover { color: #c0392b; transform: scale(1.1); }
-        
-        /* BANNER RESTORAN (Hero Image) */
-        .hero {
-            /* Menggunakan gambar restoran dari Unsplash sebagai background placeholder */
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-            margin-bottom: 40px;
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: 0.5px;
         }
-        .hero h1 { font-size: 42px; margin: 0 0 10px 0; letter-spacing: 3px; font-weight: 800; }
-        .hero p { font-size: 18px; margin: 0; opacity: 0.9; font-weight: 300; }
+        .navbar-brand span { color: var(--brand); }
+        .nav-links { display: flex; gap: 6px; align-items: center; }
+        .nav-link {
+            display: flex; align-items: center; gap: 7px;
+            text-decoration: none; color: var(--ink-soft);
+            font-size: 13.5px; font-weight: 400;
+            padding: 7px 14px; border-radius: 30px;
+            transition: background 0.18s, color 0.18s;
+        }
+        .nav-link i { font-size: 14px; }
+        .nav-link:hover { background: var(--brand-light); color: var(--brand); }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .role-badge {
+            background: var(--brand); color: #fff;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 11.5px; font-weight: 500; letter-spacing: 0.5px;
+        }
+        .btn-logout {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #FFF0E8; color: var(--brand);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; text-decoration: none; transition: background 0.18s;
+        }
+        .btn-logout:hover { background: var(--brand); color: #fff; }
 
-        /* AREA DAFTAR MENU */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px 20px; }
-        .section-title { 
-            font-size: 24px; font-weight: 800; color: #2c3e50; margin-bottom: 25px; 
-            border-bottom: 3px solid #d35400; display: inline-block; padding-bottom: 5px; 
+        /* HERO */
+        .hero {
+            background:
+                linear-gradient(rgba(15,6,0,0.62), rgba(15,6,0,0.62)),
+                url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80')
+                center/cover no-repeat;
+            padding: 90px 40px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        
-        /* GRID KARTU MAKANAN */
-        .food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        
+        .hero::before {
+            content: ''; position: absolute;
+            width: 420px; height: 420px; border-radius: 50%;
+            border: 1px solid rgba(184,92,56,0.25);
+            top: 50%; left: 50%; transform: translate(-50%,-50%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: ''; position: absolute;
+            width: 640px; height: 640px; border-radius: 50%;
+            border: 1px solid rgba(184,92,56,0.12);
+            top: 50%; left: 50%; transform: translate(-50%,-50%);
+            pointer-events: none;
+        }
+        .hero-eyebrow {
+            font-size: 11px; letter-spacing: 4px;
+            text-transform: uppercase; color: #D4956A;
+            margin-bottom: 14px; position: relative;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px; font-weight: 700; color: #fff;
+            line-height: 1.1; margin-bottom: 18px;
+            letter-spacing: 1px; position: relative;
+        }
+        .hero h1 em { font-style: italic; color: #D4956A; }
+        .hero-sub {
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; font-size: 14px; color: rgba(255,255,255,0.65);
+            letter-spacing: 1.5px; position: relative;
+        }
+        .hero-sub .dot {
+            width: 4px; height: 4px; border-radius: 50%;
+            background: var(--brand); display: inline-block;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--brand); color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px; font-weight: 500;
+            padding: 11px 28px; border-radius: 30px;
+            text-decoration: none; margin-top: 28px;
+            position: relative; transition: background 0.18s;
+        }
+        .hero-cta:hover { background: var(--brand-dark); }
+
+        /* MAIN */
+        .page-body { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
+
+        /* PROMO */
+        .promo-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 16px; margin-bottom: 20px;
+        }
+        .promo-main {
+            background: var(--brand); border-radius: var(--radius-lg);
+            padding: 28px 28px 24px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 200px; position: relative; overflow: hidden;
+        }
+        .promo-main::before {
+            content: ''; position: absolute;
+            width: 200px; height: 200px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.13);
+            top: -60px; right: -60px;
+        }
+        .promo-main::after {
+            content: ''; position: absolute;
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.09);
+            bottom: -30px; right: 40px;
+        }
+        .promo-tag {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.16); color: #fff;
+            font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 20px;
+            width: fit-content; margin-bottom: 12px;
+        }
+        .promo-disc {
+            position: absolute; top: 22px; right: 22px;
+            background: #fff; color: var(--brand);
+            font-size: 14px; font-weight: 700;
+            width: 56px; height: 56px; border-radius: 50%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            line-height: 1.2; z-index: 1;
+        }
+        .promo-disc small { font-size: 9px; font-weight: 400; letter-spacing: 0.5px; }
+        .promo-main h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px; font-weight: 700; color: #fff;
+            line-height: 1.25; margin-bottom: 6px; position: relative;
+        }
+        .promo-main p {
+            font-size: 12.5px; color: rgba(255,255,255,0.72);
+            line-height: 1.6; margin-bottom: 18px; max-width: 260px;
+        }
+        .promo-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #fff; color: var(--brand);
+            font-size: 12.5px; font-weight: 500;
+            padding: 9px 18px; border-radius: 20px;
+            text-decoration: none; width: fit-content; transition: opacity 0.18s;
+        }
+        .promo-btn:hover { opacity: 0.88; }
+        .promo-cards { display: flex; flex-direction: column; gap: 16px; }
+        .promo-mini {
+            background: var(--card); border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 16px 18px;
+            display: flex; align-items: center; gap: 14px;
+            flex: 1; text-decoration: none;
+            transition: box-shadow 0.18s, transform 0.18s;
+        }
+        .promo-mini:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .promo-mini-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
+        .icon-spicy { background: #FFF0E8; color: var(--brand); }
+        .icon-drink { background: #E1F5EE; color: #0F6E56; }
+        .promo-mini-info { flex: 1; }
+        .promo-mini-label { font-size: 10.5px; color: var(--ink-soft); letter-spacing: 0.5px; margin-bottom: 3px; }
+        .promo-mini-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+        .promo-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 10px; }
+        .badge-warm { background: #FFF0E8; color: #8C3E1E; }
+        .badge-green { background: #E1F5EE; color: #0F6E56; }
+
+        /* TIMER */
+        .promo-timer {
+            display: flex; align-items: center; gap: 12px;
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: var(--radius-md); padding: 14px 20px; margin-bottom: 52px;
+        }
+        .timer-label { font-size: 12.5px; color: var(--ink-soft); }
+        .timer-boxes { display: flex; gap: 5px; align-items: center; }
+        .tbox {
+            background: var(--brand); color: #fff;
+            font-size: 15px; font-weight: 500;
+            width: 38px; height: 38px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .tsep { color: var(--brand); font-weight: 700; }
+        .timer-note { font-size: 11.5px; color: var(--ink-soft); margin-left: auto; }
+
+        /* SECTION */
+        .section-header {
+            display: flex; justify-content: space-between;
+            align-items: baseline; margin-bottom: 24px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; font-weight: 700; color: var(--ink);
+        }
+        .section-title::after {
+            content: ''; display: block;
+            width: 40px; height: 2.5px;
+            background: var(--brand); border-radius: 2px; margin-top: 6px;
+        }
+        .see-all { font-size: 12.5px; color: var(--brand); text-decoration: none; }
+        .see-all:hover { opacity: 0.72; }
+
+        /* FOOD CARDS */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 22px;
+        }
         .food-card {
-            background: white; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s ease;
+            background: var(--card); border-radius: var(--radius-md);
+            border: 1px solid var(--border); overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        .food-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .food-img-wrap { position: relative; overflow: hidden; }
+        .food-img {
+            width: 100%; height: 190px; object-fit: cover; display: block;
+            transition: transform 0.4s ease;
+        }
+        .food-card:hover .food-img { transform: scale(1.04); }
+        .food-cat-badge {
+            position: absolute; top: 12px; left: 12px;
+            background: rgba(255,255,255,0.9); color: var(--ink-soft);
+            font-size: 10.5px; font-weight: 500;
+            padding: 4px 10px; border-radius: 20px;
+            letter-spacing: 0.5px; text-transform: uppercase;
+        }
+        .food-info {
+            padding: 18px 18px 16px; flex-grow: 1;
             display: flex; flex-direction: column;
         }
-        .food-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
-        
-        .food-img { width: 100%; height: 200px; object-fit: cover; background-color: #eee; }
-        .food-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        
-        .food-title { font-size: 18px; font-weight: 700; color: #333; margin: 0 0 8px 0; }
-        .food-category { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
-        
+        .food-title { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 14px; line-height: 1.35; }
         .food-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .food-price { font-size: 18px; font-weight: 800; color: #d35400; }
-        
+        .food-price { font-size: 17px; font-weight: 700; color: var(--brand); }
         .btn-add-cart {
-            background: #d35400; color: white; border: none; padding: 8px 18px; border-radius: 8px;
-            text-decoration: none; font-weight: bold; font-size: 14px; transition: 0.2s;
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--brand); color: #fff; border: none;
+            padding: 8px 16px; border-radius: 20px; text-decoration: none;
+            font-size: 13px; font-weight: 500; transition: background 0.18s;
         }
-        .btn-add-cart:hover { background: #b03a00; }
-        
-        /* JIKA MENU KOSONG */
-        .empty-state { text-align: center; padding: 50px; color: #888; grid-column: 1 / -1; }
+        .btn-add-cart:hover { background: var(--brand-dark); }
+        .btn-add-cart i { font-size: 12px; }
+
+        /* EMPTY */
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 64px 20px; color: var(--ink-soft); }
+        .empty-state i { font-size: 52px; color: #D4956A; margin-bottom: 16px; display: block; }
+        .empty-state h3 { font-size: 18px; font-weight: 500; color: var(--ink-soft); }
+
+        /* FOOTER */
+        .site-footer {
+            background: var(--ink); color: rgba(255,255,255,0.55);
+            text-align: center; padding: 24px; font-size: 13px;
+        }
+        .site-footer span { color: var(--brand); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 60px 20px; }
+            .hero h1 { font-size: 34px; }
+            .promo-grid { grid-template-columns: 1fr; }
+            .page-body { padding: 32px 16px 60px; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/dashboard" class="navbar-brand">POTTE <span>HOUSE</span></a>
-        
-        <div class="nav-links">
-            <a href="#menu-makanan" class="nav-link"><i class="fas fa-utensils"></i> Menu</a>
-            <a href="/keranjang" class="nav-link"><i class="fas fa-shopping-basket"></i> Keranjang</a>
-            <a href="/ongkir" class="nav-link"><i class="fas fa-motorcycle"></i> Cek Ongkir</a>
-            <a href="/order/tracking" class="nav-link"><i class="fas fa-receipt"></i> Status Pesanan</a>
-        </div>
+<nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">POTTE <span>HOUSE</span></a>
+    <div class="nav-links">
+        <a href="#menu-makanan" class="nav-link"><i class="fas fa-utensils"></i> Menu</a>
+        <a href="/keranjang" class="nav-link"><i class="fas fa-shopping-basket"></i> Keranjang</a>
+        <a href="/ongkir" class="nav-link"><i class="fas fa-motorcycle"></i> Cek Ongkir</a>
+        <a href="/order/tracking" class="nav-link"><i class="fas fa-receipt"></i> Status Pesanan</a>
+    </div>
+    <div class="nav-right">
+        <span class="role-badge" th:text="${roleName}">PEMBELI</span>
+        <a href="/login?logout" class="btn-logout" title="Keluar"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+</nav>
 
-        <div class="nav-right">
-            <span class="role-badge" th:text="${roleName}">PEMBELI</span>
-            <a href="/login?logout" class="btn-logout" title="Keluar"><i class="fas fa-sign-out-alt"></i></a>
-        </div>
-    </nav>
+<div class="hero">
+    <p class="hero-eyebrow">Selamat datang di</p>
+    <h1>Potte <em>House</em> Cafe</h1>
+    <div class="hero-sub">
+        <span>All Day Dining</span><span class="dot"></span>
+        <span>Bahan Segar</span><span class="dot"></span>
+        <span>Rasa Tak Terlupakan</span>
+    </div>
+    <a href="#menu-makanan" class="hero-cta"><i class="fas fa-utensils"></i> Lihat Menu Kami</a>
+</div>
 
-    <div class="hero">
-        <h1>POTTE HOUSE CAFE</h1>
-        <p>All Day Dining • Bahan Segar • Rasa Tak Terlupakan</p>
+<div class="page-body">
+
+    <p style="font-size:11px;letter-spacing:2px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:14px;">
+        <i class="fas fa-fire" style="color:var(--brand);margin-right:5px;"></i> Promo spesial hari ini
+    </p>
+
+    <div class="promo-grid">
+        <div class="promo-main">
+            <div>
+                <div class="promo-tag"><i class="fas fa-star" style="font-size:10px;"></i> Pilihan editor</div>
+                <div class="promo-disc">20%<small>OFF</small></div>
+                <h3>Makan Siang<br>Ala Potte House</h3>
+                <p>Nikmati nasi, lauk pilihan & minuman segar — khas cita rasa Medan yang bikin nagih.</p>
+            </div>
+            <a href="#menu-makanan" class="promo-btn">Pesan sekarang <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="promo-cards">
+            <a href="#menu-makanan" class="promo-mini">
+                <div class="promo-mini-icon icon-spicy"><i class="fas fa-drumstick-bite"></i></div>
+                <div class="promo-mini-info">
+                    <p class="promo-mini-label">Andalan Medan</p>
+                    <p class="promo-mini-name">Ayam Geprek Sambal Gila</p>
+                    <span class="promo-badge badge-warm">Gratis nasi</span>
+                </div>
+                <i class="fas fa-chevron-right" style="color:var(--ink-soft);font-size:13px;"></i>
+            </a>
+            <a href="#menu-makanan" class="promo-mini">
+                <div class="promo-mini-icon icon-drink"><i class="fas fa-mug-hot"></i></div>
+                <div class="promo-mini-info">
+                    <p class="promo-mini-label">Minuman Segar</p>
+                    <p class="promo-mini-name">Es Teh Tarik Medan</p>
+                    <span class="promo-badge badge-green">Gratis untuk paket</span>
+                </div>
+                <i class="fas fa-chevron-right" style="color:var(--ink-soft);font-size:13px;"></i>
+            </a>
+        </div>
     </div>
 
-    <div class="container" id="menu-makanan">
-        <h2 class="section-title">Rekomendasi Menu Kami</h2>
-        
+    <div class="promo-timer">
+        <i class="fas fa-clock" style="color:var(--brand);font-size:17px;"></i>
+        <span class="timer-label">Promo berakhir dalam</span>
+        <div class="timer-boxes">
+            <div class="tbox" id="ph-h">05</div><span class="tsep">:</span>
+            <div class="tbox" id="ph-m">42</div><span class="tsep">:</span>
+            <div class="tbox" id="ph-s">00</div>
+        </div>
+        <span class="timer-note">Jangan sampai kehabisan!</span>
+    </div>
+
+    <div id="menu-makanan">
+        <div class="section-header">
+            <h2 class="section-title">Rekomendasi Menu Kami</h2>
+            <a href="#menu-makanan" class="see-all">Lihat semua →</a>
+        </div>
         <div class="food-grid">
             <div class="food-card" th:each="prod : ${products}">
-                
-                <img th:src="'https://ui-avatars.com/api/?name=' + ${prod.name} + '&background=random&color=fff&size=300'" alt="Foto Menu" class="food-img">
-                
+                <div class="food-img-wrap">
+                    <img th:src="'https://ui-avatars.com/api/?name=' + ${prod.name} + '&background=B85C38&color=fff&size=400&bold=true'"
+                         th:alt="${prod.name}" class="food-img">
+                    <span class="food-cat-badge" th:text="${prod.category}">Kategori</span>
+                </div>
                 <div class="food-info">
-                    <div>
-                        <h3 class="food-title" th:text="${prod.name}">Nama Menu</h3>
-                        <div class="food-category" th:text="${prod.category}">Kategori</div>
-                    </div>
+                    <h3 class="food-title" th:text="${prod.name}">Nama Menu</h3>
                     <div class="food-bottom">
                         <span class="food-price" th:text="'Rp ' + ${#numbers.formatDecimal(prod.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</span>
-                        
                         <a th:href="@{/keranjang/tambah/{id}(id=${prod.id})}" class="btn-add-cart">
                             <i class="fas fa-plus"></i> Pesan
                         </a>
                     </div>
                 </div>
             </div>
-
             <div th:if="${#lists.isEmpty(products)}" class="empty-state">
-                <i class="fas fa-store-slash" style="font-size: 48px; margin-bottom: 15px; color: #ccc;"></i>
+                <i class="fas fa-store-slash"></i>
                 <h3>Belum ada menu yang tersedia.</h3>
             </div>
         </div>
     </div>
+
+</div>
+
+<footer class="site-footer">
+    &copy; 2024 <span>Potte House</span> Cafe &mdash; All Day Dining, Medan
+</footer>
+
+<script>
+    let total = 5 * 3600 + 42 * 60;
+    function tick() {
+        if (total <= 0) return;
+        total--;
+        const h = Math.floor(total / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const s = total % 60;
+        document.getElementById('ph-h').textContent = String(h).padStart(2, '0');
+        document.getElementById('ph-m').textContent = String(m).padStart(2, '0');
+        document.getElementById('ph-s').textContent = String(s).padStart(2, '0');
+    }
+    setInterval(tick, 1000);
+</script>
 
 </body>
 </html>
