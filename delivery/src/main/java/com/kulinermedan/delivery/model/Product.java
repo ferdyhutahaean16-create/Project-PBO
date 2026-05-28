@@ -25,7 +25,7 @@ public class Product {
     private Integer stock;
 
     @Column(nullable = false, length = 50)
-    private String category; // Makanan, Minuman, Souvenir
+    private String category; // Makanan, Minuman, 
 
     @Column(columnDefinition = "MEDIUMTEXT")
     private String imageBase64;
