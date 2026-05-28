@@ -1,50 +1,255 @@
 <!DOCTYPE html>
 <html lang="id" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Kelola Pesanan - Penjual</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pesanan - POTTE HOUSE</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: Arial; margin: 20px; background: #f4f4f9; }
-        .container { background: white; padding: 20px; border-radius: 8px; max-width: 900px; margin: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #343a40; color: white; }
-        select, button { padding: 6px; border-radius: 4px; }
-        button { background: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+        :root {
+            --primary-color: #c8623c; /* Terakota khas Potte House */
+            --primary-hover: #b05432;
+            --bg-color: #fcfaf8; /* Putih tulang */
+            --card-bg: #ffffff;
+            --text-dark: #2d2d2d;
+            --text-muted: #6b6b6b;
+            --border-color: #f1f3f5;
+            --soft-orange: #fff8f5;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            margin: 0; 
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 40px 20px;
+        }
+
+        .container { 
+            background: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 16px; 
+            max-width: 1000px; 
+            margin: auto; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .header-title h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-dark);
+            margin: 0 0 5px 0;
+            font-size: 28px;
+        }
+
+        .header-title p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .btn-back {
+            text-decoration: none; 
+            color: var(--text-muted); 
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s ease;
+            background: #f8f9fa;
+            padding: 10px 16px;
+            border-radius: 8px;
+        }
+
+        .btn-back:hover {
+            color: var(--primary-color);
+            background: var(--soft-orange);
+        }
+
+        /* STYLED TABLE */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: white;
+        }
+
+        th { 
+            background-color: var(--soft-orange); 
+            color: var(--primary-color); 
+            text-align: left; 
+            padding: 18px 20px; 
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #f2e6e1;
+        }
+
+        td { 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 18px 20px; 
+            font-size: 15px;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #fafafa;
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: var(--text-dark);
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .buyer-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .price-text {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* FORM STYLING */
+        .status-form {
+            display: flex; 
+            gap: 10px;
+            align-items: center;
+        }
+
+        select { 
+            padding: 10px 14px; 
+            border-radius: 8px; 
+            border: 1px solid #d1d5db;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            background-color: white;
+            outline: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 170px;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(200, 98, 60, 0.15);
+        }
+
+        button { 
+            background: var(--primary-color); 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Empty state styling if table is empty */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
+    
     <div class="container">
-        <h2>Manajemen Status Pengiriman 🚚</h2>
-        <a href="/dashboard/penjual" style="text-decoration: none; color: #007bff;">&larr; Kembali ke Dashboard Toko</a>
+        
+        <div class="header-section">
+            <div class="header-title">
+                <h2>Manajemen Status Pengiriman</h2>
+                <p>Kelola dan perbarui status pesanan pelanggan secara real-time.</p>
+            </div>
+            <a href="/dashboard/penjual" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+            </a>
+        </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Nama Pembeli</th>
-                    <th>Total Belanja</th>
-                    <th>Status Pengiriman</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="order : ${orders}">
-                    <td th:text="'#KM-' + ${order.id}">ID</td>
-                    <td th:text="${order.user.username}">Nama</td>
-                    <td th:text="'Rp ' + ${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')}">Total</td>
-                    <td>
-                        <form th:action="@{/order/update-status}" method="post" style="display: flex; gap: 10px;">
-                            <input type="hidden" name="orderId" th:value="${order.id}">
-                            <select name="status">
-                                <option value="DIKEMAS" th:selected="${order.status.name() == 'DIKEMAS'}">📦 Sedang Dikemas</option>
-                                <option value="DIPERJALANAN" th:selected="${order.status.name() == 'DIPERJALANAN'}">🛵 Diperjalanan</option>
-                                <option value="SAMPAI" th:selected="${order.status.name() == 'SAMPAI'}">✅ Sampai Tujuan</option>
-                            </select>
-                            <button type="submit">Update</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Nama Pembeli</th>
+                        <th>Total Belanja</th>
+                        <th>Status Pengiriman</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td><span class="order-id" th:text="'#KM-' + ${order.id}">ID</span></td>
+                        <td class="buyer-name" th:text="${order.user.username}">Nama</td>
+                        <td class="price-text" th:text="'Rp ' + ${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')}">Total</td>
+                        <td>
+                            <form th:action="@{/order/update-status}" method="post" class="status-form">
+                                <input type="hidden" name="orderId" th:value="${order.id}">
+                                <select name="status">
+                                    <option value="DIKEMAS" th:selected="${order.status.name() == 'DIKEMAS'}">📦 Sedang Dikemas</option>
+                                    <option value="DIPERJALANAN" th:selected="${order.status.name() == 'DIPERJALANAN'}">🛵 Diperjalanan</option>
+                                    <option value="SAMPAI" th:selected="${order.status.name() == 'SAMPAI'}">✅ Sampai Tujuan</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(orders)}">
+                        <td colspan="4" class="empty-state">
+                            <i class="fas fa-clipboard-list" style="font-size: 30px; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
+                            Belum ada pesanan yang masuk saat ini.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
     </div>
+
 </body>
 </html>
