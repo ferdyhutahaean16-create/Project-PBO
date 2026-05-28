@@ -2,9 +2,11 @@ package com.kulinermedan.delivery.controller;
 
 import com.kulinermedan.delivery.model.Cart;
 import com.kulinermedan.delivery.model.Order;
+import com.kulinermedan.delivery.model.Product; // Import model Product
 import com.kulinermedan.delivery.model.User;
 import com.kulinermedan.delivery.repository.CartRepository;
 import com.kulinermedan.delivery.repository.OrderRepository;
+import com.kulinermedan.delivery.repository.ProductRepository; // Import ProductRepository
 import com.kulinermedan.delivery.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,29 +23,57 @@ public class OrderController {
     @Autowired private OrderRepository orderRepository;
     @Autowired private CartRepository cartRepository;
     @Autowired private UserRepository userRepository;
+    
+    // TAMBAHAN: Memanggil database produk agar kita bisa mengubah stoknya
+    @Autowired private ProductRepository productRepository; 
 
-    // 1. PROSES CHECKOUT (Mengubah Keranjang jadi Pesanan)
+    // 1. PROSES CHECKOUT (Mengubah Keranjang jadi Pesanan & Kurangi Stok)
     @PostMapping("/checkout")
-    public String prosesCheckout(Principal principal) {
+    public String prosesCheckout(Principal principal, 
+                                 @RequestParam("ongkir") Double ongkir, 
+                                 @RequestParam("alamatDetail") String alamatDetail) {
+        
+        // 1. Cari siapa user yang sedang login
         User user = userRepository.findByEmail(principal.getName()).orElse(null);
-        List<Cart> cartItems = cartRepository.findByUser(user);
+        if (user == null) return "redirect:/login";
 
+        // 2. Ambil semua barang di keranjang milik user tersebut
+        List<Cart> cartItems = cartRepository.findByUser(user);
         if (cartItems.isEmpty()) return "redirect:/keranjang";
 
-        // Hitung total harga dari semua barang di keranjang
-        double total = 0;
+        // 3. Hitung total harga makanan & KURANGI STOK OTOMATIS
+        double totalHargaMakanan = 0;
         for (Cart item : cartItems) {
-            total += (item.getProduct().getPrice() * item.getQuantity());
+            // A. Menghitung harga
+            totalHargaMakanan += (item.getProduct().getPrice() * item.getQuantity());
+            
+            // B. Mengurangi Stok Produk
+            Product produkDipesan = item.getProduct();
+            int sisaStok = produkDipesan.getStock() - item.getQuantity();
+            
+            // C. Keamanan: Mencegah stok menjadi minus jika sistem telat membaca
+            if (sisaStok < 0) {
+                sisaStok = 0;
+            }
+            
+            // D. Simpan sisa stok terbaru kembali ke database
+            produkDipesan.setStock(sisaStok);
+            productRepository.save(produkDipesan);
         }
 
-        // Buat pesanan baru
+        // 4. Tambahkan total harga makanan dengan ONGKIR
+        double totalKeseluruhan = totalHargaMakanan + ongkir;
+
+        // 5. Buat pesanan baru dan simpan ke database
         Order order = new Order();
         order.setUser(user);
-        order.setTotalPrice(total);
-        order.setStatus(Order.StatusPesanan.DIKEMAS);
+        order.setTotalPrice(totalKeseluruhan);
+        
+        // Menggunakan Enum StatusPesanan yang sudah kita temukan
+        order.setStatus(Order.StatusPesanan.DIKEMAS); 
         orderRepository.save(order);
 
-        // Hapus isi keranjang karena sudah di-checkout
+        // 6. Kosongkan keranjang belanja karena sudah dicheckout
         cartRepository.deleteAll(cartItems);
 
         return "redirect:/order/tracking";
