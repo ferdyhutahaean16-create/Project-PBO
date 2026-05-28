@@ -1,303 +1,77 @@
 <!DOCTYPE html>
-<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Stok - POTTE HOUSE</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary-color: #c8623c; /* Terakota */
-            --primary-hover: #b05432;
-            --bg-color: #fcfaf8; /* Putih tulang */
-            --card-bg: #ffffff;
-            --text-dark: #2d2d2d;
-            --text-muted: #6b6b6b;
-            --border-color: #e5e7eb;
-            --soft-orange: #fff8f5;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            margin: 0;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 35px 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.02);
-        }
-
-        /* HEADER SECTION */
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 25px;
-            border-bottom: 1px dashed var(--border-color);
-        }
-
-        .header-title h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            color: var(--text-dark);
-            margin: 0 0 8px 0;
-        }
-
-        .header-title p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .btn-add {
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(200, 98, 60, 0.15);
-        }
-
-        .btn-add:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        /* ALERTS */
-        .alert {
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .alert-content { display: flex; align-items: center; gap: 10px; }
-
-        .alert-success { background-color: #f0fdf4; color: #166534; border-left: 5px solid #22c55e; }
-        .alert-danger { background-color: #fef2f2; color: #dc2626; border-left: 5px solid #ef4444; }
-        .alert-warning { background-color: #fffbeb; color: #d97706; border-left: 5px solid #f59e0b; }
-
-        .btn-close {
-            background: none;
-            border: none;
-            font-size: 16px;
-            color: inherit;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.2s;
-        }
-
-        .btn-close:hover { opacity: 1; }
-
-        /* TABLE STYLING */
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            text-align: left;
-        }
-
-        th {
-            background-color: var(--soft-orange);
-            color: var(--primary-color);
-            padding: 18px 20px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #f2e6e1;
-        }
-
-        td {
-            padding: 16px 20px;
-            font-size: 14px;
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-
-        tbody tr:last-child td { border-bottom: none; }
-        tbody tr:hover { background-color: #fafafa; }
-
-        .fw-bold { font-weight: 700; color: var(--text-dark); }
-        .price-text { font-weight: 600; color: var(--text-muted); }
-
-        /* BADGES */
-        .badge {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-        }
-
-        .bg-danger { background: #fef2f2; color: #dc2626; }
-        .bg-warning { background: #fffbeb; color: #d97706; }
-        .bg-success { background: #f0fdf4; color: #166534; }
-
-        /* ACTION BUTTONS IN TABLE */
-        .action-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .btn-sm {
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        .btn-warning { background: #fdf6e3; color: #d97706; }
-        .btn-warning:hover { background: #fef3c7; border-color: #fde68a; }
-
-        .btn-success { background: #f0fdf4; color: #166534; }
-        .btn-success:hover { background: #dcfce7; border-color: #bbf7d0; }
-
-        .btn-danger { background: #fef2f2; color: #dc2626; }
-        .btn-danger:hover { background: #fee2e2; border-color: #fecaca; }
-
-        .d-inline { display: inline-block; margin: 0; }
-
-        /* EMPTY STATE */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
-    </style>
+    <title>Manajemen Stok</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="container mt-4">
+    <h2>📦 Manajemen Stok & Inventari</h2>
+    <p class="text-muted">Kelola stok produk oleh-oleh Medan.</p>
 
-<div class="container">
-    
-    <div class="header-section">
-        <div class="header-title">
-            <h2>📦 Manajemen Stok & Inventaris</h2>
-            <p>Kelola ketersediaan produk dan oleh-oleh khas dengan mudah.</p>
-        </div>
-        <a href="/stok/tambah" class="btn-add">
-            <i class="fas fa-plus"></i> Tambah Produk
-        </a>
+    <div th:if="${sukses}" class="alert alert-success alert-dismissible fade show">
+        <span th:text="${sukses}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-
-    <div th:if="${sukses}" class="alert alert-success">
-        <div class="alert-content">
-            <i class="fas fa-check-circle"></i> <span th:text="${sukses}"></span>
-        </div>
-        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"><i class="fas fa-times"></i></button>
-    </div>
-    
-    <div th:if="${error}" class="alert alert-danger">
-        <div class="alert-content">
-            <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
-        </div>
-        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"><i class="fas fa-times"></i></button>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
     <div th:if="${not #lists.isEmpty(stokHampirHabis)}" class="alert alert-warning">
-        <div class="alert-content">
-            <i class="fas fa-exclamation-triangle"></i> 
-            <div>
-                <strong>Perhatian! Stok produk berikut hampir habis (≤5):</strong><br>
-                <span th:each="p, i : ${stokHampirHabis}">
-                    <span class="fw-bold" th:text="${p.name}"></span><span th:if="${!i.last}">, </span>
-                </span>
-            </div>
-        </div>
-        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"><i class="fas fa-times"></i></button>
+        ⚠️ <strong>Stok hampir habis (≤5):</strong>
+        <span th:each="p, i : ${stokHampirHabis}">
+            <strong th:text="${p.name}"></strong><span th:if="${!i.last}">, </span>
+        </span>
     </div>
 
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 5%;">#</th>
-                    <th style="width: 25%;">Nama Produk</th>
-                    <th style="width: 15%;">Kategori</th>
-                    <th style="width: 15%;">Harga</th>
-                    <th style="width: 10%;">Stok</th>
-                    <th style="width: 10%;">Status</th>
-                    <th style="width: 20%; text-align: center;">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p, i : ${produkList}">
-                    <td class="fw-bold" style="color: var(--text-muted);" th:text="${i.count}"></td>
-                    <td class="fw-bold" th:text="${p.name}"></td>
-                    <td th:text="${p.category}"></td>
-                    <td class="price-text" th:text="'Rp ' + ${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')}"></td>
-                    <td class="fw-bold" th:text="${p.stock}"></td>
-                    <td>
-                        <span th:if="${p.stock <= 0}" class="badge bg-danger">Habis</span>
-                        <span th:if="${p.stock > 0 and p.stock <= 5}" class="badge bg-warning">Hampir Habis</span>
-                        <span th:if="${p.stock > 5}" class="badge bg-success">Tersedia</span>
-                    </td>
-                    <td>
-                        <div class="action-group" style="justify-content: center;">
-                            <a th:href="@{/stok/update/{id}(id=${p.id})}" class="btn-sm btn-warning" title="Update Stok"><i class="fas fa-edit"></i></a>
+    <a href="/stok/tambah" class="btn btn-primary mb-3">+ Tambah Produk</a>
 
-                            <form th:action="@{/stok/tambah-stok/{id}(id=${p.id})}" method="post" class="d-inline">
-                                <input type="hidden" name="jumlah" value="10">
-                                <button type="submit" class="btn-sm btn-success" title="Tambah 10 Stok">+10</button>
-                            </form>
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Nama Produk</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p, i : ${produkList}">
+                <td th:text="${i.count}"></td>
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.category}"></td>
+                <td th:text="'Rp ' + ${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${p.stock}"></td>
+                <td>
+                    <span th:if="${p.stock <= 0}" class="badge bg-danger">Habis</span>
+                    <span th:if="${p.stock > 0 and p.stock <= 5}" class="badge bg-warning text-dark">Hampir Habis</span>
+                    <span th:if="${p.stock > 5}" class="badge bg-success">Tersedia</span>
+                </td>
+                <td>
+                    <a th:href="@{/stok/update/{id}(id=${p.id})}" class="btn btn-sm btn-warning">Update</a>
 
-                            <form th:action="@{/stok/hapus/{id}(id=${p.id})}" method="post" class="d-inline"
-                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini dari sistem?')">
-                                <button type="submit" class="btn-sm btn-danger" title="Hapus Produk"><i class="fas fa-trash-alt"></i></button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <tr th:if="${#lists.isEmpty(produkList)}">
-                    <td colspan="7" class="empty-state">
-                        <i class="fas fa-box-open" style="font-size: 32px; color: #cbd5e1; margin-bottom: 10px; display: block;"></i>
-                        Belum ada produk yang terdaftar di dalam sistem inventaris.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                    <form th:action="@{/stok/tambah-stok/{id}(id=${p.id})}" method="post" class="d-inline">
+                        <input type="hidden" name="jumlah" value="10">
+                        <button type="submit" class="btn btn-sm btn-success">+10</button>
+                    </form>
 
+                    <form th:action="@{/stok/hapus/{id}(id=${p.id})}" method="post" class="d-inline"
+                          onsubmit="return confirm('Yakin hapus produk ini?')">
+                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(produkList)}">
+                <td colspan="7" class="text-center text-muted">Belum ada produk.</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

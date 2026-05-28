@@ -3,336 +3,231 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Menu & Oleh-oleh - POTTE HOUSE</title>
-    
+    <title>Katalog Oleh-oleh - Kuliner Medan</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --primary-color: #c8623c; /* Terakota khas Potte House */
-            --primary-hover: #b05432;
-            --bg-color: #fcfaf8; /* Putih tulang */
-            --card-bg: #ffffff;
-            --text-dark: #2d2d2d;
-            --text-muted: #6b6b6b;
-            --border-color: #f1f3f5;
-            --soft-orange: #fff8f5;
-        }
-
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
-            padding: 40px 30px;
+            padding: 30px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* HEADER SECTION */
         .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
-            background: var(--card-bg);
-            padding: 25px 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.02);
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
-        .header-title h2 {
-            margin: 0 0 5px 0;
-            color: var(--text-dark);
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            letter-spacing: 0.5px;
-        }
-        
-        .header-title p {
+        h2 {
             margin: 0;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
+            color: #2c3e50;
         }
 
         .btn {
-            padding: 12px 20px;
+            padding: 10px 18px;
             text-decoration: none;
+            color: white;
             border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: bold;
+            transition: 0.2s;
         }
 
         .btn-add {
-            background: var(--primary-color);
-            color: white;
-            box-shadow: 0 4px 15px rgba(200, 98, 60, 0.2);
+            background: #28a745;
         }
 
         .btn-add:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
+            background: #218838;
         }
 
         .btn-back {
-            background: #f1f5f9;
-            color: #475569;
-        }
-        
-        .btn-back:hover {
-            background: #e2e8f0;
-            color: var(--text-dark);
+            background: #6c757d;
+            margin-left: 10px;
         }
 
-        /* GRID PRODUK */
+        /* Desain Grid Produk */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
         }
 
-        /* KARTU PRODUK */
+        /* Desain Kartu Produk */
         .product-card {
-            background: var(--card-bg);
-            border-radius: 16px;
+            background: white;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
         }
 
         .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Foto Produk (Sementara pakai Placeholder) */
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #e9ecef;
+        }
+
+        .product-content {
+            padding: 15px;
         }
 
         .category-badge {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--primary-color);
-            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #fd7e14;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(4px);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: var(--soft-orange);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .product-content {
-            padding: 22px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .product-title {
-            margin: 0 0 8px 0;
+            margin: 0 0 10px 0;
             font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-            font-family: 'Playfair Display', serif;
+            color: #333;
         }
 
         .product-seller {
             font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: #6c757d;
+            margin-bottom: 10px;
         }
 
         .product-seller i {
-            color: var(--primary-color);
-            opacity: 0.8;
+            color: #007bff;
+            margin-right: 5px;
         }
 
         .product-price {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: auto 0 8px 0; /* Auto margin pushes it to bottom if title is short */
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            margin: 0 0 10px 0;
         }
 
         .product-stock {
             font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-        
-        .product-stock strong {
-            color: var(--text-dark);
+            color: #666;
+            margin-bottom: 15px;
         }
 
-        /* TOMBOL AKSI DALAM KARTU */
+        /* Tombol Aksi dalam Kartu */
         .action-group {
             display: flex;
-            gap: 10px;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 18px;
+            gap: 8px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
         }
 
         .btn-action {
             flex: 1;
             text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
+            color: white;
+            font-weight: bold;
         }
 
         .btn-cart {
-            background: var(--primary-color);
-            color: white;
+            background: #17a2b8;
             flex: 2;
-        }
-        
-        .btn-cart:hover {
-            background: var(--primary-hover);
         }
 
         .btn-edit {
-            background: #fdf6e3;
-            color: #d97706;
-        }
-        
-        .btn-edit:hover {
-            background: #fef3c7;
-            color: #b45309;
+            background: #ffc107;
+            color: black;
         }
 
         .btn-delete {
-            background: #fef2f2;
-            color: #ef4444;
-        }
-        
-        .btn-delete:hover {
-            background: #fee2e2;
-            color: #dc2626;
+            background: #dc3545;
         }
 
-        /* EMPTY STATE */
         .empty-state {
+            grid-column: 1 / -1;
             text-align: center;
-            padding: 80px 20px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            color: var(--text-muted);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-            border: 1px dashed #cbd5e1;
-            margin-top: 20px;
-        }
-        
-        .empty-state h3 {
-            color: var(--text-dark);
-            margin: 10px 0 5px 0;
-            font-family: 'Playfair Display', serif;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+            color: #6c757d;
         }
     </style>
 </head>
 
 <body>
-    
-    <div class="container">
-        <div class="header-section">
-            <div class="header-title">
-                <h2>Katalog Produk Potte House</h2>
-                <p>Jelajahi menu cafe dan pusat oleh-oleh khas kami.</p>
-            </div>
-            
-            <div class="header-actions">
-                <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}" href="/produk/tambah" class="btn btn-add">
-                    <i class="fas fa-plus"></i> Tambah Produk
-                </a>
-                <a href="/dashboard" class="btn btn-back">
-                    <i class="fas fa-arrow-left"></i> Kembali
-                </a>
-            </div>
+
+    <div class="header-section">
+        <h2>🍽️ Menu POTTE HOUSE Cafe & All Day Dining</h2>
+        <div>
+            <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}" href="/produk/tambah" class="btn btn-add">
+                <i class="fas fa-plus"></i> Tambah Menu
+            </a>
+            <a href="/dashboard" class="btn btn-back"><i class="fas fa-arrow-left"></i> Kembali</a>
         </div>
+    </div>
 
-        <div th:if="${#lists.isEmpty(products)}" class="empty-state">
-            <i class="fas fa-basket-shopping" style="font-size: 56px; color: #e2e8f0; margin-bottom: 15px;"></i>
-            <h3>Katalog Masih Kosong</h3>
-            <p>Belum ada produk oleh-oleh yang ditambahkan ke dalam sistem saat ini.</p>
-        </div>
+    <div class="product-grid">
+        <div class="product-card" th:each="prod : ${products}">
 
-        <div class="product-grid" th:if="${not #lists.isEmpty(products)}">
+            <span class="category-badge" th:text="${prod.category}">Kategori</span>
+
+            <img th:if="${prod.imageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${prod.imageBase64}" alt="Foto Menu" class="product-image">
             
-            <div class="product-card" th:each="prod : ${products}">
-                <span class="category-badge" th:text="${prod.category}">Kategori</span>
+            <img th:if="${prod.imageBase64 == null}" th:src="'https://ui-avatars.com/api/?name=' + ${prod.name} + '&background=random&color=fff&size=300'" alt="Foto Menu" class="product-image">
 
-                <img th:src="'https://ui-avatars.com/api/?name=' + ${prod.name} + '&background=fef3c7&color=c8623c&size=300'"
-                    alt="Foto Produk" class="product-image">
+            <div class="product-content">
+                <h3 class="product-title" th:text="${prod.name}">Nama Produk</h3>
 
-                <div class="product-content">
-                    <h3 class="product-title" th:text="${prod.name}">Nama Produk</h3>
-
-                    <div class="product-seller">
-                        <i class="fas fa-store"></i> Potte House Oleh-Oleh
-                    </div>
-
-                    <p class="product-price"
-                        th:text="'Rp ' + ${#numbers.formatDecimal(prod.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
-                    <p class="product-stock">Tersedia: <strong th:text="${prod.stock}">0</strong> stok</p>
-
-                    <div class="action-group">
-                        <a th:if="${currentRole == 'PEMBELI'}" th:href="@{/keranjang/tambah/{id}(id=${prod.id})}"
-                            class="btn-action btn-cart">
-                            <i class="fas fa-cart-plus"></i> Beli
-                        </a>
-
-                        <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}"
-                            th:href="@{/produk/edit/{id}(id=${prod.id})}" class="btn-action btn-edit" title="Edit Produk">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}"
-                            th:href="@{/produk/hapus/{id}(id=${prod.id})}" class="btn-action btn-delete"
-                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini secara permanen?')" title="Hapus Produk">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </div>
+                <div class="product-seller">
+                    <i class="fas fa-store"></i> Toko Oleh-Oleh Khas Medan
                 </div>
-            </div> </div> </div>
+
+                <p class="product-price"
+                    th:text="'Rp ' + ${#numbers.formatDecimal(prod.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</p>
+                <p class="product-stock">Tersedia: <strong th:text="${prod.stock}">0</strong> stok</p>
+
+                <div class="action-group">
+                    <a th:if="${currentRole == 'PEMBELI'}" th:href="@{/keranjang/tambah/{id}(id=${prod.id})}"
+                        class="btn-action btn-cart">
+                        <i class="fas fa-cart-plus"></i> Beli
+                    </a>
+
+                    <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}"
+                        th:href="@{/produk/edit/{id}(id=${prod.id})}" class="btn-action btn-edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a th:if="${currentRole == 'ADMIN' or currentRole == 'PENJUAL'}"
+                        th:href="@{/produk/hapus/{id}(id=${prod.id})}" class="btn-action btn-delete"
+                        onclick="return confirm('Hapus produk ini?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(products)}" class="empty-state">
+                <i class="fas fa-box-open" style="font-size: 48px; color: #dee2e6; margin-bottom: 15px;"></i>
+                <h3>Katalog Masih Kosong</h3>
+                <p>Belum ada produk oleh-oleh yang ditambahkan ke dalam sistem.</p>
+            </div>
+        </div>
 
 </body>
 
