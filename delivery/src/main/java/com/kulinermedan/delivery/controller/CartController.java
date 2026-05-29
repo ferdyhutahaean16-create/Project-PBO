@@ -39,7 +39,7 @@ public class CartController {
 
         // Kirim datanya ke HTML
         model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalBelanja", totalBelanja); // Kunci agar tulisan 'null' hilang!
+        model.addAttribute("totalBelanja", totalBelanja); 
         
         return "keranjang";
     }

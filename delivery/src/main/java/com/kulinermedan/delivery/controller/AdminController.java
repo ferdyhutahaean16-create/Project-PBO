@@ -12,11 +12,7 @@ import java.util.ArrayList; // Tambahkan import ini
 public class AdminController {
 
     @Autowired 
-    private UserRepository userRepository;
-    
-    // HAPUS SEMENTARA:
-    // @Autowired private ProductRepository productRepository; 
-    // @Autowired private OrderRepository orderRepository;     
+    private UserRepository userRepository;   
 
     @GetMapping("/dashboard")
     public String adminDashboard(Model model) {

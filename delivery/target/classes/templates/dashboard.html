@@ -215,9 +215,8 @@
 
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
-                    // Hapus class 'active' dari semua tombol
                     filterBtns.forEach(b => b.classList.remove('active'));
-                    // Tambahkan class 'active' ke tombol yang diklik
+                    // Tambah class 'active' ke tombol yang diklik
                     this.classList.add('active');
 
                     const filterValue = this.getAttribute('data-filter');

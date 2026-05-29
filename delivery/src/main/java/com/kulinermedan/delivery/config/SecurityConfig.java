@@ -35,7 +35,6 @@ public class SecurityConfig {
                         .loginPage("/login") 
                         .usernameParameter("email") 
                         
-                        // GANTI BARIS INI: Gunakan successHandler, bukan defaultSuccessUrl
                         .successHandler(customSuccessHandler) 
                         
                         .permitAll())

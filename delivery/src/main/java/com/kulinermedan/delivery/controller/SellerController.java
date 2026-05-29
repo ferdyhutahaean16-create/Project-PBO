@@ -44,7 +44,7 @@ public class SellerController {
         return "redirect:/dashboard/penjual?success=stock_updated";
     }
 
-    // FITUR BARU: Rute untuk melihat semua ulasan pelanggan
+    // FITUR: Rute untuk melihat semua ulasan pelanggan
     @GetMapping("/ulasan")
     public String lihatSemuaUlasan(Model model) {
         // Ambil semua ulasan terbaru dari database, urutkan dari yang paling baru
