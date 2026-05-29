@@ -2,6 +2,7 @@ package com.kulinermedan.delivery.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -12,20 +13,20 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 1000)
+    private String comment;
+
+    // Menghubungkan ulasan dengan Menu/Produk
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    // Menghubungkan ulasan dengan Pelanggan
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Menghubungkan ulasan langsung ke pesanan yang sudah selesai
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
-
-    @Column(nullable = false)
-    private Integer ratingRasa; // Skala 1-5
-
-    @Column(nullable = false)
-    private Integer ratingKecepatan; // Skala 1-5
-
-    private String komentar;
+    // Waktu ulasan dibuat
+    @Column(updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Ulasan Pelanggan - POTTE HOUSE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d35400;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --border: #e9ecef;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--light); margin: 0; color: #333; }
+        
+        /* NAVBAR PENJUAL */
+        .navbar { background-color: var(--dark); padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .navbar-brand { font-size: 24px; font-weight: 900; color: var(--white); text-decoration: none; letter-spacing: 1px; }
+        .navbar-brand span { color: var(--primary); }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-link { text-decoration: none; color: #cbd5e1; font-weight: 600; font-size: 15px; transition: 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--white); }
+        .btn-back { background: rgba(255,255,255,0.1); color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s;}
+        .btn-back:hover { background: rgba(255,255,255,0.2); }
+
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        .page-header { margin-bottom: 30px; }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--dark); margin: 0 0 5px 0;}
+        .page-header p { color: #6c757d; margin: 0; }
+
+        .review-card { background: var(--white); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); display: flex; gap: 20px;}
+        
+        /* Gambar Produk Kecil di Sebelah Kiri */
+        .product-thumb { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; background: #eee;}
+        
+        .review-content { flex-grow: 1; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; border-bottom: 1px dashed var(--border); padding-bottom: 10px;}
+        .reviewer-info { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--dark);}
+        .reviewer-info i { color: #ccc; font-size: 20px;}
+        
+        .product-name-badge { background: #fff3ec; color: var(--primary); padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px;}
+        
+        .review-date { font-size: 12px; color: #adb5bd; }
+        .review-text { color: #495057; font-size: 15px; line-height: 1.6; margin: 0;}
+        
+        .empty-state { text-align: center; padding: 60px; background: white; border-radius: 12px; color: #adb5bd;}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard/penjual" class="navbar-brand">POTTE <span>ADMIN</span></a>
+        <div class="nav-links">
+            <a href="/order/kelola" class="nav-link">Kelola Pesanan</a>
+            <a href="/produk" class="nav-link">Katalog Menu</a>
+            <a href="/ulasan-pelanggan" class="nav-link active">Ulasan Pelanggan</a>
+        </div>
+        <a href="/dashboard/penjual" class="btn-back">Kembali ke Dashboard</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="page-header">
+            <h1>Pantau Ulasan Pelanggan</h1>
+            <p>Lihat apa kata pelanggan tentang menu POTTE HOUSE Anda.</p>
+        </div>
+
+        <div th:if="${not #lists.isEmpty(reviews)}">
+            <div class="review-card" th:each="ulasan : ${reviews}">
+                
+                <img th:if="${ulasan.product.imageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${ulasan.product.imageBase64}" class="product-thumb">
+                <img th:if="${ulasan.product.imageBase64 == null}" th:src="'https://ui-avatars.com/api/?name=' + ${ulasan.product.name} + '&background=random&color=fff&size=100'" class="product-thumb">
+                
+                <div class="review-content">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <i class="fas fa-user-circle"></i>
+                            <span th:text="${ulasan.user.name}">Nama Pelanggan</span>
+                            <span class="product-name-badge">
+                                <i class="fas fa-utensils"></i> <span th:text="${ulasan.product.name}">Nama Menu</span>
+                            </span>
+                        </div>
+                        
+                        <div class="review-date" th:if="${ulasan.createdAt != null}" th:text="${#temporals.format(ulasan.createdAt, 'dd MMM yyyy, HH:mm')}">Tgl Ulasan</div>
+                    </div>
+                    
+                    <p class="review-text" th:text="${ulasan.comment}">Ini adalah komentar pelanggan mengenai makanan tersebut.</p>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(reviews)}" class="empty-state">
+            <i class="far fa-comments" style="font-size: 48px; color: #dee2e6; margin-bottom: 15px;"></i>
+            <h3>Belum ada ulasan yang masuk.</h3>
+            <p>Terus tingkatkan kualitas pelayanan agar pelanggan memberikan ulasan terbaik!</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
