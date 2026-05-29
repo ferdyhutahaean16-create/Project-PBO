@@ -72,24 +72,31 @@
 
         <div th:if="${not #lists.isEmpty(reviews)}">
             <div class="review-card" th:each="ulasan : ${reviews}">
-                
-                <img th:if="${ulasan.product.imageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${ulasan.product.imageBase64}" class="product-thumb">
-                <img th:if="${ulasan.product.imageBase64 == null}" th:src="'https://ui-avatars.com/api/?name=' + ${ulasan.product.name} + '&background=random&color=fff&size=100'" class="product-thumb">
-                
                 <div class="review-content">
+                    
                     <div class="review-header">
                         <div class="reviewer-info">
                             <i class="fas fa-user-circle"></i>
-                            <span th:text="${ulasan.user.name}">Nama Pelanggan</span>
-                            <span class="product-name-badge">
-                                <i class="fas fa-utensils"></i> <span th:text="${ulasan.product.name}">Nama Menu</span>
+                            <span th:text="${ulasan.user.email}">Nama Pelanggan</span>
+                            <span style="background: #eef2f5; color: #6c757d; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px;">
+                                <i class="fas fa-receipt"></i> Pesanan #<span th:text="${ulasan.order.id}">ID</span>
                             </span>
                         </div>
-                        
-                        <div class="review-date" th:if="${ulasan.createdAt != null}" th:text="${#temporals.format(ulasan.createdAt, 'dd MMM yyyy, HH:mm')}">Tgl Ulasan</div>
                     </div>
                     
-                    <p class="review-text" th:text="${ulasan.comment}">Ini adalah komentar pelanggan mengenai makanan tersebut.</p>
+                    <div style="margin-bottom: 15px; font-size: 14px; color: #555; background: #fafafa; padding: 10px; border-radius: 8px; display: inline-block; border: 1px solid #eee;">
+                        <span style="margin-right: 15px;">
+                            <strong>Rasa:</strong> 
+                            <span style="color: #f1c40f;"><i class="fas fa-star"></i> <span th:text="${ulasan.ratingRasa}">0</span>/5</span>
+                        </span>
+                        <span>
+                            <strong>Kecepatan:</strong> 
+                            <span style="color: #f1c40f;"><i class="fas fa-star"></i> <span th:text="${ulasan.ratingKecepatan}">0</span>/5</span>
+                        </span>
+                    </div>
+
+                    <p class="review-text" th:text="${ulasan.komentar}">Komentar pelanggan.</p>
+                    
                 </div>
             </div>
         </div>

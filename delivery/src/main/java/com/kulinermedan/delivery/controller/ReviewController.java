@@ -18,25 +18,27 @@ import java.security.Principal;
 public class ReviewController {
 
     @Autowired private ReviewRepository reviewRepository;
-    @Autowired private OrderRepository orderRepository;
+    @Autowired private OrderRepository orderRepository; // Menggunakan Order
     @Autowired private UserRepository userRepository;
 
-    // Menampilkan Form Ulasan
-    @GetMapping("/tulis/{orderId}")
-    public String tampilkanFormUlasan(@PathVariable Long orderId, Model model) {
+    @GetMapping("/tambah/{orderId}")
+    public String tampilkanFormUlasan(@PathVariable Long orderId, Model model, Principal principal) {
+        if (principal == null) return "redirect:/login";
+
         Order order = orderRepository.findById(orderId).orElse(null);
-        
-        Review review = new Review();
-        review.setOrder(order);
-        
-        model.addAttribute("review", review);
+        if (order == null) return "redirect:/order/tracking";
+
         model.addAttribute("order", order);
+        model.addAttribute("review", new Review());
         return "form_ulasan";
     }
 
-    // Memproses Penyimpanan Ulasan
     @PostMapping("/simpan")
-    public String simpanUlasan(@ModelAttribute Review review, @RequestParam Long orderId, Principal principal) {
+    public String simpanUlasan(@RequestParam("orderId") Long orderId,
+                               @ModelAttribute Review review,
+                               Principal principal) {
+        if (principal == null) return "redirect:/login";
+
         User user = userRepository.findByEmail(principal.getName()).orElse(null);
         Order order = orderRepository.findById(orderId).orElse(null);
 
@@ -45,6 +47,8 @@ public class ReviewController {
             review.setOrder(order);
             reviewRepository.save(review);
         }
-        return "redirect:/order/tracking?success=review_added";
+
+        // Kembali ke halaman tracking pesanan setelah mengulas
+        return "redirect:/order/tracking";
     }
 }

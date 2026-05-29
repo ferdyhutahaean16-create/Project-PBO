@@ -86,7 +86,7 @@
                 </div>
                 
                 <div th:if="${order.status.name() == 'SAMPAI'}">
-                    <a th:href="@{'/ulasan/tulis/' + ${order.id}}" class="btn-review"><i class="fas fa-star"></i> Beri Ulasan</a>
+                    <a th:href="@{/ulasan/tambah/{id}(id=${order.id})}" class="btn-review"><i class="fas fa-star"></i> Beri Ulasan</a>
                 </div>
             </div>
         </div>

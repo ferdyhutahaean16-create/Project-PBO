@@ -13,20 +13,22 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Disamakan persis dengan name="komentar" di HTML
     @Column(nullable = false, length = 1000)
-    private String comment;
+    private String komentar; 
 
-    // Menghubungkan ulasan dengan Menu/Produk
+    // Tempat menyimpan nilai bintang dari HTML
+    private Integer ratingRasa;      
+    private Integer ratingKecepatan; 
+
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
-    // Menghubungkan ulasan dengan Pelanggan
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Waktu ulasan dibuat
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }
